@@ -1,3 +1,9 @@
+import { Main } from "./Main";
+
 export const Header = () => {
-  return <div>Header</div>;
+  return (
+    <header>
+      <Main />
+    </header>
+  );
 };
