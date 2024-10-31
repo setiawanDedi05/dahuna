@@ -6,7 +6,7 @@ export const Row = ({
   className,
 }: {
   children: React.ReactNode;
-  className: string;
+  className?: string;
 }) => {
   return (
     <div className={cn("flex items-center h-full", className)}>{children}</div>

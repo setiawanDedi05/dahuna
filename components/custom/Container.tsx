@@ -6,7 +6,7 @@ export const Container = ({
   className,
 }: {
   children: React.ReactNode;
-  className: string;
+  className?: string;
 }) => {
   return (
     <div className={cn("container w-full h-full", className)}>{children}</div>
