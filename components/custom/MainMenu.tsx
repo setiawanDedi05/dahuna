@@ -39,7 +39,7 @@ export const MainMenu = () => {
           </Link>
         </li>
         <li className="relative">
-          <HoverCard openDelay={50}>
+          <HoverCard openDelay={0}>
             <HoverCardTrigger>
               <div className="flex gap-3">
                 Category <ChevronDown />
@@ -47,16 +47,28 @@ export const MainMenu = () => {
             </HoverCardTrigger>
             <HoverCardContent className="w-[400px]">
               <div className="grid grid-cols-2 gap-x-10 gap-y-5">
-                <Link href="/" className="text-center">
+                <Link
+                  href="/"
+                  className="text-center hover:text-primary/40 hover:translate-y-1 hover:translate-x-1 ease-in-out transition-all"
+                >
                   Woman Cloth
                 </Link>
-                <Link href="/" className="text-center">
+                <Link
+                  href="/"
+                  className="text-center hover:text-primary/40 hover:translate-y-1 hover:translate-x-1 ease-in-out transition-all"
+                >
                   Man Cloth
                 </Link>
-                <Link href="/" className="text-center">
+                <Link
+                  href="/"
+                  className="text-center hover:text-primary/40 hover:translate-y-1 hover:translate-x-1 ease-in-out transition-all"
+                >
                   Boy Cloth
                 </Link>
-                <Link href="/" className="text-center">
+                <Link
+                  href="/"
+                  className="text-center hover:text-primary/40 hover:translate-y-1 hover:translate-x-1 ease-in-out transition-all"
+                >
                   Girl Cloth
                 </Link>
               </div>
