@@ -11,7 +11,7 @@ export default function RootLayout({
   return (
     <>
       <Header />
-      {children}
+      <div className="h-screen">{children}</div>
       <Footer />
     </>
   );
