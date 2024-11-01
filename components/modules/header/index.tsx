@@ -2,7 +2,7 @@ import { Main } from "./Main";
 
 export const Header = () => {
   return (
-    <header>
+    <header className="h-[80px]">
       <Main />
     </header>
   );

@@ -8,9 +8,9 @@ import React from "react";
 
 export const Main = () => {
   return (
-    <section>
+    <section className="h-full">
       <Container>
-        <Row>
+        <Row className="justify-between items-center">
           <MobileButton />
           <Logo />
           <MainMenu />
