@@ -4,11 +4,25 @@ import { Separator } from "@/components/ui/separator";
 import { useUser } from "@clerk/nextjs";
 import { Mail, MapPin, PhoneCall } from "lucide-react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 export const Footer = () => {
   const { isSignedIn } = useUser();
   return (
-    <footer className="bg-primary/80 text-primary-foreground/90 pb-10">
+    <motion.footer
+      initial={{
+        opacity: 0,
+        y: 100,
+      }}
+      whileInView={{
+        opacity: 1,
+        y: 0,
+      }}
+      transition={{
+        duration: 0.3,
+      }}
+      className="bg-primary/80 text-primary-foreground/90 pb-10"
+    >
       <Container>
         <div className="grid grid-cols-1 md:grid-cols-2 md:gap-5 md:pl-10">
           <ul className="flex flex-col gap-4">
@@ -62,7 +76,7 @@ export const Footer = () => {
           </Link>
         </div>
       </Container>
-    </footer>
+    </motion.footer>
   );
 };
 
