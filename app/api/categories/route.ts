@@ -7,7 +7,7 @@ export const GET = async (req: Request) => {
         _id: "1",
         title: "Woman Cloth",
         link: "/products?caregory=woman-cloth",
-        image: "/assets/images/woman-cloth.jpg",
+        image: "/assets/images/woman-1.jpg",
       },
       {
         _id: "2",

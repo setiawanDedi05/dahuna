@@ -18,3 +18,11 @@ export type Slide = {
   textColor: string;
   createdAt: string;
 };
+
+export type Product = {
+  _id: string;
+  title: string;
+  price: string;
+  images: string[];
+  category: string;
+};
