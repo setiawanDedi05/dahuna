@@ -1,79 +1,82 @@
 "use client";
 
 import { Container } from "@/components/custom/Container";
-import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Slide } from "@/types";
 import "swiper/css/navigation";
 import "swiper/css";
 import "./style.css";
+import { motion } from "framer-motion";
+import { LoaderIcon } from "lucide-react";
+import useSWR, { Fetcher } from "swr";
 
 export const HomeSlide = () => {
-  const slides: Slide[] = [
-    {
-      _id: "1",
-      name: "Nobis maxime quos eum.",
-      link: "/",
-      slug: "nulla-distinctio-at",
-      title:
-        "Consectetur eu sint aliquip excepteur amet deserunt tempor excepteur dolore dolor pariatur.",
-      description:
-        "Elit commodo consequat laborum laborum dolor ex esse aliquip tempor ut anim proident.",
-      subtitle: "Ullamco ex sit laborum reprehenderit.",
-      btn: "shopnow",
-      image: "/assets/images/image-1.jpg",
-      textColor: "#000",
-      createdAt: "11/3/2024, 10:07:43 AM",
-    },
-    {
-      _id: "2",
-      name: "Debitis maxime natus ad.",
-      link: "/",
-      slug: "Fugit assumenda et laudantium consequatur provident nostrum.",
-      title: "Dolor vel non.",
-      description: "deleniti-dolores-ut",
-      subtitle:
-        "Et asperiores magnam quod fugiat autem veritatis. Neque nulla id inventore tempora iusto doloribus accusantium. Est earum error. Tempora sit adipisci inventore quo aut. Enim at dolorum in iure.",
-      btn: "",
-      image: "/assets/images/image-2.jpg",
-      textColor: "#000",
-      createdAt: "11/3/2024, 10:13:52 AM",
-    },
-  ];
+  const fetcher: Fetcher<Slide[], string> = (args) =>
+    fetch(args)
+      .then((res) => res.json())
+      .then((res) => {
+        console.log({ res });
+        return res.content;
+      });
+
+  const { data, error, isLoading } = useSWR<Slide[]>(
+    process.env.NEXT_PUBLIC_URL + "/api/slides",
+    fetcher
+  );
+
+  if (error) {
+    return <>Error</>;
+  }
+
+  if (isLoading) {
+    return <LoaderIcon className="animate-spin" />;
+  }
+
   return (
-    <section>
+    <motion.section
+      initial={{
+        opacity: 0,
+        x: -100,
+      }}
+      whileInView={{
+        opacity: 1,
+        x: 0,
+      }}
+      transition={{
+        duration: 0.3,
+      }}
+    >
       <Container>
         <Swiper
           autoplay={{
             delay: 6000,
             disableOnInteraction: false,
           }}
-          spaceBetween={50}
-          slidesPerView={1}
           navigation={true}
           pagination={true}
           modules={[Autoplay, Navigation, Pagination]}
         >
           {
             <>
-              {slides.map((item: Slide) => (
-                <SwiperSlide
-                  key={item._id}
-                  style={{
-                    background: `url(${item.image})`,
-                    height: "700px",
-                    width: "100%",
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    backgroundRepeat: "no-repeat"
-                  }}
-                ></SwiperSlide>
-              ))}
+              {data &&
+                data.map((item: Slide) => (
+                  <SwiperSlide
+                    key={item._id}
+                    style={{
+                      background: `url(${item.image})`,
+                      height: "900px",
+                      width: "100%",
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                      backgroundRepeat: "no-repeat",
+                    }}
+                  ></SwiperSlide>
+                ))}
             </>
           }
         </Swiper>
       </Container>
-    </section>
+    </motion.section>
   );
 };

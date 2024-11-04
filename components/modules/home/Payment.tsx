@@ -8,10 +8,21 @@ import "swiper/css";
 import "./style.css";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { CreditCard, Headset, Shield } from "lucide-react";
+import { motion } from "framer-motion";
 
 export const Payment = () => {
   return (
-    <section className="py-10">
+    <motion.section className="py-10" initial={{
+      opacity: 0,
+      x: 100,
+    }}
+    whileInView={{
+      opacity: 1,
+      x: 0,
+    }}
+    transition={{
+      duration: 0.3,
+    }}>
       <Container>
         <Swiper
           breakpoints={{
@@ -66,6 +77,6 @@ export const Payment = () => {
           </SwiperSlide>
         </Swiper>
       </Container>
-    </section>
+    </motion.section>
   );
 };
