@@ -1,7 +1,6 @@
 import {
+  Brands,
   Categories,
-  CtaOne,
-  CtaTwo,
   FeatureProduct,
   HomeSlide,
   Payment,
@@ -15,8 +14,7 @@ export default function Home() {
       <Payment />
       <Categories />
       <FeatureProduct />
-      <CtaTwo />
-      <CtaOne />
+      <Brands />
     </>
   );
 }
