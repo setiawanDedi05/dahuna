@@ -25,4 +25,6 @@ export type Product = {
   price: string;
   images: string[];
   category: string;
+  description: string;
+  real_price: string;
 };
