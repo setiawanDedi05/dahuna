@@ -9,21 +9,29 @@ import "./style.css";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { CreditCard, Headset, Shield } from "lucide-react";
 import { motion } from "framer-motion";
+import { Heading } from "./Heading";
+import { Row } from "@/components/custom/Row";
 
 export const Payment = () => {
   return (
-    <motion.section className="py-10" initial={{
-      opacity: 0,
-      x: 100,
-    }}
-    whileInView={{
-      opacity: 1,
-      x: 0,
-    }}
-    transition={{
-      duration: 0.3,
-    }}>
+    <motion.section
+      className="py-10"
+      initial={{
+        opacity: 0,
+        x: 100,
+      }}
+      whileInView={{
+        opacity: 1,
+        x: 0,
+      }}
+      transition={{
+        duration: 0.3,
+      }}
+    >
       <Container>
+        <Row className="mb-10">
+          <Heading title="Trusted" />
+        </Row>
         <Swiper
           breakpoints={{
             360: {
