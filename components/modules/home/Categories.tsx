@@ -1,12 +1,14 @@
 "use client";
 
 import { Container } from "@/components/custom/Container";
+import { Row } from "@/components/custom/Row";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Category } from "@/types";
 import { motion } from "framer-motion";
-import { LoaderIcon } from "lucide-react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import useSWR, { Fetcher } from "swr";
+import { Heading } from "./Heading";
 
 export const Categories = () => {
   const animation = {
@@ -32,7 +34,28 @@ export const Categories = () => {
   }
 
   if (isLoading) {
-    return <LoaderIcon className="animate-spin" />;
+    return (
+      <div className="h-[700px] w-3/4 p-10 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 overflow-hidden">
+        <div className="h-[700px] flex flex-col -space-y-28">
+          <Skeleton className="w-full h-full" />
+          <div className="space-y-2">
+            <Skeleton className="h-10 w-[250px] md:w-[200px] mx-auto" />
+          </div>
+        </div>
+        <div className="h-[700px] flex flex-col -space-y-28">
+          <Skeleton className="w-full h-full" />
+          <div className="space-y-2">
+            <Skeleton className="h-10 w-[250px] md:w-[200px] mx-auto" />
+          </div>
+        </div>
+        <div className="h-[700px] flex flex-col -space-y-28">
+          <Skeleton className="w-full h-full" />
+          <div className="space-y-2">
+            <Skeleton className="h-10 w-[250px] md:w-[200px] mx-auto" />
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -50,6 +73,9 @@ export const Categories = () => {
       }}
     >
       <Container>
+        <Row className="mb-10">
+          <Heading title="Shop By Category" />
+        </Row>
         <Swiper
           autoplay={{
             delay: 6000,
@@ -69,7 +95,7 @@ export const Categories = () => {
               spaceBetween: 40,
             },
             768: {
-              slidesPerView: 1,
+              slidesPerView: 2,
               spaceBetween: 40,
             },
             1024: {
@@ -90,7 +116,7 @@ export const Categories = () => {
                     key={item._id}
                     style={{
                       background: `url(${item.image})`,
-                      height: "700px",
+                      height: "500px",
                       width: "100%",
                       backgroundSize: "contain",
                       backgroundPosition: "center",
