@@ -10,6 +10,9 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+  .animation-pause {
+    animation-play-state: paused;
+  }
 }
 
 @layer base {
