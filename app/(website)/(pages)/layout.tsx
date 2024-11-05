@@ -11,7 +11,7 @@ export default function RootLayout({
   return (
     <>
       <Header />
-      <div className="h-min-screen">{children}</div>
+      <div className="h-min-screen overflow-x-hidden">{children}</div>
       <Footer />
     </>
   );
