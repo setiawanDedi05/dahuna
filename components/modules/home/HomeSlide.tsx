@@ -8,15 +8,14 @@ import "swiper/css/navigation";
 import "swiper/css";
 import "./style.css";
 import { motion } from "framer-motion";
-import { LoaderIcon } from "lucide-react";
 import useSWR, { Fetcher } from "swr";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const HomeSlide = () => {
   const fetcher: Fetcher<Slide[], string> = (args) =>
     fetch(args)
       .then((res) => res.json())
       .then((res) => {
-        console.log({ res });
         return res.content;
       });
 
@@ -30,7 +29,9 @@ export const HomeSlide = () => {
   }
 
   if (isLoading) {
-    return <LoaderIcon className="animate-spin" />;
+    return <div className="h-[900px] w-full p-10">
+      <Skeleton className="w-full h-full" />
+    </div> 
   }
 
   return (
@@ -65,7 +66,7 @@ export const HomeSlide = () => {
                     key={item._id}
                     style={{
                       background: `url(${item.image})`,
-                      height: "900px",
+                      height: "800px",
                       width: "100%",
                       backgroundSize: "cover",
                       backgroundPosition: "center",
