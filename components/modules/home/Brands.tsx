@@ -52,7 +52,7 @@ export const Brands = () => {
                 alt={logo.alt}
                 width={200}
                 height={100}
-                className="!size-16 md:!size-24"
+                className="!size-20 md:!size-24"
               />
             </li>
           ))}
@@ -68,7 +68,7 @@ export const Brands = () => {
                 alt={logo.alt}
                 width={200}
                 height={100}
-                className="!size-16 md:!size-24"
+                className="!size-20 md:!size-24"
               />
             </li>
           ))}
