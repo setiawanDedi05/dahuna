@@ -14,6 +14,7 @@ import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import useSWR, { Fetcher } from "swr";
 import { Heading } from "./Heading";
+import { ProductCard } from "../product";
 
 const SkeletonProductCard = () => (
   <div className="h-[500px] flex flex-col space-y-3">
@@ -116,43 +117,7 @@ export const FeatureProduct = () => {
                       width: "400px",
                     }}
                   >
-                    <div className="p-3 w-full h-full border flex flex-col justify-start gap-1">
-                      <Button
-                        variant="outline"
-                        className="absolute size-10 right-5 top-5"
-                      >
-                        <ShoppingCartIcon className="size-8" />
-                      </Button>
-                      <Button
-                        variant="outline"
-                        className="absolute size-10 right-16 top-5"
-                      >
-                        <Heart className="size-8" />
-                      </Button>
-                      <Image
-                        src={item.images && item.images[0]}
-                        alt={item.title}
-                        width={300}
-                        height={400}
-                        className="!h-[400px] !w-[300px] object-cover"
-                      />
-                      <h2 className="text-left truncate text-xl font-bold leading-10">
-                        {item.title}
-                      </h2>
-                      <span className="text-muted-foreground text-sm text-left truncate">
-                        {item.description}
-                      </span>
-                      <div className="flex flex-col justify-start items-start">
-                        <Currency
-                          amount={item.real_price}
-                          className="line-through font-bold text-muted-foreground"
-                        />
-                        <Currency
-                          amount={item.price}
-                          className="text-center font-bold text-3xl"
-                        />
-                      </div>
-                    </div>
+                    <ProductCard item={item} />
                   </SwiperSlide>
                 ))}
             </>

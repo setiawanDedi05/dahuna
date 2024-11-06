@@ -24,8 +24,8 @@ export const Footer = () => {
       className="bg-primary/80 text-primary-foreground/90 pb-10"
     >
       <Container>
-        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-5 md:pl-10">
-          <ul className="flex flex-col gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 md:gap-5 items-start justify-between">
+          <ul className="flex flex-col gap-4 md:mx-auto">
             <li className="my-10">
               <h4 className="text-xl font-bold uppercase">Dahuna</h4>
             </li>
@@ -42,7 +42,7 @@ export const Footer = () => {
               Desa Cipendawa, Kecamatan Pacet, Kabupaten Cianjur, 54323
             </li>
           </ul>
-          <ul className="flex flex-col gap-4">
+          <ul className="flex flex-col gap-4 md:mx-auto">
             <li className="my-10">
               <h4 className="text-xl font-bold uppercase">Informations</h4>
             </li>
@@ -61,20 +61,25 @@ export const Footer = () => {
               <Link href="/account">Checkout</Link>
             </li>
           </ul>
+          <ul className="flex flex-col gap-4 md:mx-auto">
+            <li className="my-10">
+              <h4 className="text-xl font-bold uppercase">Connect With Us</h4>
+            </li>
+            <div className="flex gap-5 mt-5">
+              <Link href="/ddi.setia1" className="hover:scale-110">
+                <InstagramSVG className="size-6 lg:size-8 text-white" />
+              </Link>
+              <Link href="/setiawanDedi05" className="hover:scale-110">
+                <XSVG className="size-6 lg:size-8 text-white" />
+              </Link>
+              <Link href="/setiawanDedi05" className="hover:scale-110">
+                <GithubSVG className="size-6 lg:size-8" />
+              </Link>
+            </div>
+          </ul>
         </div>
-        <Separator className="border-slate-300 border-2 my-5" />
+        <Separator className="border-slate-300 border-1 mb-5 mt-10" />
         <span className="my-5">&copy;2024 Dahuna All Right Reserved</span>
-        <div className="flex gap-5 mt-5">
-          <Link href="/ddi.setia1" className="hover:scale-110">
-            <InstagramSVG className="size-6 text-white" />
-          </Link>
-          <Link href="/setiawanDedi05" className="hover:scale-110">
-            <XSVG className="size-6 text-white" />
-          </Link>
-          <Link href="/setiawanDedi05" className="hover:scale-110">
-            <GithubSVG className="size-6" />
-          </Link>
-        </div>
       </Container>
     </motion.footer>
   );
