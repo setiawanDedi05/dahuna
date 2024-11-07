@@ -1,13 +1,12 @@
 import { cn } from "@/lib/utils";
 import { Category } from "@/types";
-import { Loader2 } from "lucide-react";
-import React, { useEffect, useState } from "react";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Slider } from "@/components/ui/slider";
+import { Input } from "@/components/ui/input";
+import { toCurrency } from "@/components/custom/Currency";
+import { Label } from "@/components/ui/label";
 
 type ProductSideBarProps = {
   minPrice: number;
@@ -17,6 +16,7 @@ type ProductSideBarProps = {
   loading: boolean;
   setLoading: (value: boolean) => void;
   className?: string;
+  categories: Category[];
 };
 
 export const ProductSideBar = ({
@@ -27,20 +27,30 @@ export const ProductSideBar = ({
   loading,
   setLoading,
   className,
+  categories,
 }: ProductSideBarProps) => {
   return (
-    <div className={cn("lg:!max-w-[300px] h-full", className)}>
+    <div className={cn("h-full flex flex-col", className)}>
       <div className="flex flex-col gap-8 items-center">
         <div className="flex flex-col gap-2 items-center w-full">
           <ProductHeadingSideBar title="Product Categories" />
-          <ProductCatAccordions />
+          <ProductCategory categories={categories} setLoading={setLoading} loading={loading} />
+        </div>
+        <div className="flex flex-col gap-2 items-center w-full">
+          <ProductHeadingSideBar title="Filter by price" />
+          <ProductFiltersByPrice
+            minPrice={minPrice}
+            maxPrice={maxPrice}
+            setMinPrice={setMinPrice}
+            setMaxPrice={setMaxPrice}
+          />
         </div>
       </div>
     </div>
   );
 };
 
-const ProductHeadingSideBar = ({ title }: { title: string }) => {
+export const ProductHeadingSideBar = ({ title }: { title: string }) => {
   return (
     <div className="flex flex-col gap-4 w-full">
       <div className="flex justify-between items-center w-full">
@@ -50,37 +60,88 @@ const ProductHeadingSideBar = ({ title }: { title: string }) => {
   );
 };
 
-const ProductCatAccordions = () => {
-  const [loading, setLoading] = useState(false);
-  const [categories, setCategories] = useState<Category[]>([]);
+export type ProductCategoryProps = {
+  loading: boolean;
+  setLoading: (value: boolean) => void;
+  categories: Category[];
+};
 
-  useEffect(() => {
-    const getCategories = async () => {
-      setLoading(true);
-      await fetch(process.env.NEXT_PUBLIC_URL + "/api/categories")
-        .then((res) => res.json())
-        .then((res) => {
-          setCategories(res.content);
-        })
-        .catch((error) => console.log(error))
-        .finally(() => setLoading(false));
-    };
-
-    getCategories();
-  }, []);
-
+export const ProductCategory = ({
+  loading,
+  categories,
+}: ProductCategoryProps) => {
   return loading ? (
-    <Loader2 className="animation-spin" />
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-5">
+      <Skeleton className="h-10 w-20" />
+      <Skeleton className="h-10 w-20" />
+      <Skeleton className="h-10 w-20" />
+      <Skeleton className="h-10 w-20" />
+      <Skeleton className="h-10 w-20" />
+    </div>
   ) : (
-    <Accordion type="single" collapsible className="w-full">
-      <AccordionItem value="item-1">
-        <AccordionTrigger>see Categories?</AccordionTrigger>
-        {categories.map((category: Category) => (
-          <AccordionContent key={category._id}>
-            {category.title}
-          </AccordionContent>
-        ))}
-      </AccordionItem>
-    </Accordion>
+    <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
+      {categories.map((category: Category) => (
+        <Button variant="outline" key={category._id} className="w-24 h-12">
+          <span className="truncate">{category.title}</span>
+        </Button>
+      ))}
+    </div>
+  );
+};
+
+export type ProductFiltersByPriceProps = {
+  minPrice: number;
+  setMinPrice: (value: number) => void;
+  maxPrice: number;
+  setMaxPrice: (value: number) => void;
+};
+
+export const ProductFiltersByPrice = ({
+  minPrice,
+  setMinPrice,
+  maxPrice,
+  setMaxPrice,
+}: ProductFiltersByPriceProps) => {
+  return (
+    <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-1">
+        <Label htmlFor="min-price">Min</Label>
+        <Slider
+          name="min-price"
+          defaultValue={[minPrice]}
+          max={maxPrice}
+          min={0}
+          step={500000}
+          onValueCommit={(e: number[]) => setMinPrice(e[0])}
+        />
+        <Input
+          name="min-input"
+          type="text"
+          value={toCurrency({ amount: minPrice })}
+          className="border"
+          placeholder="min price"
+          disabled
+        />
+      </div>
+      <div className="flex flex-col gap-1">
+        <Label htmlFor="max-price">Max</Label>
+        <Slider
+          name="max-price"
+          defaultValue={[maxPrice]}
+          max={10000000}
+          step={500000}
+          min={minPrice}
+          onValueCommit={(e: number[]) => setMaxPrice(e[0])}
+        />
+        <Input
+          type="text"
+          name="max-input"
+          value={toCurrency({ amount: maxPrice })}
+          className="border"
+          placeholder="max price"
+          disabled
+        />
+      </div>
+    </div>
   );
 };
