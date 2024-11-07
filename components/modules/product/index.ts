@@ -4,6 +4,7 @@ import { ProductSideBar } from "./ProductSideBar";
 import { ProductContent } from "./ProductContent";
 import { ProductTopBar } from "./ProductTopBar";
 import { ProductCard } from "./ProductCard";
+import { LoaderProducts } from "./LoaderProducts";
 
 export {
   ProductBreadCrumb,
@@ -12,4 +13,5 @@ export {
   ProductTopBar,
   ProductContent,
   ProductCard,
+  LoaderProducts,
 };
