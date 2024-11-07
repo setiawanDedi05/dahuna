@@ -22,13 +22,13 @@ export const GET = async (req: Request) => {
         image: "/assets/images/boy-cloth.jpg",
       },
       {
-        _id: "3",
+        _id: "4",
         title: "Girl Cloth",
         link: "/products?caregory=girl-cloth",
         image: "/assets/images/girl-cloth.jpg",
       },
       {
-        _id: "4",
+        _id: "5",
         title: "Baby Cloth",
         link: "/products?caregory=baby-boy-cloth",
         image: "/assets/images/baby-cloth.jpg",
