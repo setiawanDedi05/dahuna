@@ -1,5 +1,6 @@
 import React from "react";
 import { ClerkProvider } from "@clerk/nextjs";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -19,7 +20,7 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
         signInFallbackRedirectUrl="/sign-in"
         signUpFallbackRedirectUrl="/"
       >
-        {children}
+        <TooltipProvider>{children}</TooltipProvider>
       </ClerkProvider>
     </div>
   );
