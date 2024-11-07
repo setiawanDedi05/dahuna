@@ -9,12 +9,9 @@ export const ProductCard = ({ item }: { item: Product }) => {
   return (
     <div className="p-3 w-full h-full border flex flex-col justify-start gap-1">
       <div className="flex group/image h-[400px] relative overflow-hidden">
-        <div className="absolute z-10 left-1 top-3 flex gap-3">
-          <Button variant="outline">
+        <div className="absolute z-10 left-1 top-3 flex gap-1">
+          <Button variant="outline" size="icon">
             <ShoppingCartIcon className="size-11" />
-          </Button>
-          <Button variant="outline">
-            <Heart className="size-11" />
           </Button>
         </div>
         <Image
