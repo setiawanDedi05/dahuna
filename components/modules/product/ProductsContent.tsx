@@ -2,10 +2,10 @@
 
 import { usePagination } from "@/hooks/usePagination";
 import { cn } from "@/lib/utils";
-import { Product } from "@/types";
+import { Category, Product } from "@/types";
 import { LoaderIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { ProductContent, ProductTopBar } from "./";
+import { LoaderProducts, ProductContent, ProductTopBar } from "./";
 import { CustomPagination } from "@/components/custom/CustomPagination";
 
 type ProductContentProps = {
@@ -16,6 +16,7 @@ type ProductContentProps = {
   loading: boolean;
   setLoading: (value: boolean) => void;
   className?: string;
+  categories: Category[];
 };
 
 export const ProductsContent = ({
@@ -26,12 +27,13 @@ export const ProductsContent = ({
   loading,
   setLoading,
   className,
+  categories,
 }: ProductContentProps) => {
-  const [products, setproducts] = useState<Product[]>([]);
+  const [products, setproducts] = useState<Product[]>();
   const [perPage, setperPage] = useState<number>(10);
   const [filter, setfilter] = useState<string>("latest");
   const [page, setpage] = useState(1);
-  const count = Math.ceil(products.length / perPage);
+  const count = products && Math.ceil(products.length / perPage);
   const _DATA = usePagination(products, perPage);
 
   const handleChange = (e: React.ChangeEvent<unknown>, p: number) => {
@@ -62,10 +64,10 @@ export const ProductsContent = ({
     getProducts();
   }, [page, filter, minPrice, maxPrice]);
 
-  if (loading) return <LoaderIcon className="animate-spin" />;
+  if (loading || !_DATA.currentData()) return <LoaderProducts />;
 
   return (
-    <div className={cn("border", className)}>
+    <div className={cn(className)}>
       <ProductTopBar
         minPrice={minPrice}
         setMinPrice={setMinPrice}
@@ -77,9 +79,10 @@ export const ProductsContent = ({
         setPerPage={setperPage}
         filter={filter}
         setFilter={setfilter}
-        maxPage={_DATA.maxPage}
+        maxPage={_DATA.maxPage ?? 1}
         page={page}
         products={products}
+        categories={categories}
       />
       <ProductContent products={_DATA.currentData()} />
       <div className="py-10 flex justify-between mt-auto">

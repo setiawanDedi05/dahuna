@@ -1,5 +1,5 @@
 import { MobileSidebarLeft } from "@/components/custom/MobileSidebarLeft";
-import { Product } from "@/types";
+import { Category, Product } from "@/types";
 import React from "react";
 import {
   DropdownMenu,
@@ -24,8 +24,10 @@ type ProductTopBarProps = {
   setFilter: (value: string) => void;
   maxPage: number;
   page: number;
-  products: Product[];
+  products?: Product[];
+  categories: Category[];
 };
+
 export const ProductTopBar = ({
   minPrice,
   setMinPrice,
@@ -40,19 +42,31 @@ export const ProductTopBar = ({
   maxPage,
   page,
   products,
+  categories,
 }: ProductTopBarProps) => {
   return (
-    <div className="lg:flex items-center justify-between w-full">
+    <div className="lg:flex items-center justify-between w-full mb-10">
       <div className="flex items-center gap-4 flex-1 justify-between">
-        <MobileSidebarLeft />
+        <MobileSidebarLeft
+          minPrice={minPrice}
+          setMinPrice={setMinPrice}
+          maxPrice={maxPrice}
+          setMaxPrice={setMaxPrice}
+          loading={loading}
+          setLoading={setLoading}
+          categories={categories}
+        />
         <div className="hidden lg:block">
-          Showing {maxPage === page ? products.length : perPage * page} of{" "}
-          {products.length} results
+          Showing{" "}
+          {maxPage === page ? products && products.length : perPage * page} of{" "}
+          {products && products.length} results
         </div>
         <div className="ms-auto">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline">{filter}</Button>
+              <Button variant="outline" className="capitalize">
+                {filter}
+              </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
               <DropdownMenuSeparator />
