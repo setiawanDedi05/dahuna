@@ -66,6 +66,7 @@ export const MobileSidebarLeft = ({
                   categories={categories}
                   loading={loading}
                   setLoading={setLoading}
+                  className="grid grid-cols-3 sm:grid-cols-2 gap-3 w-full px-5 py-3"
                 />
               </div>
               <div className="flex flex-col gap-2 items-center w-full">

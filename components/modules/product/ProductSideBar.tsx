@@ -34,7 +34,12 @@ export const ProductSideBar = ({
       <div className="flex flex-col gap-8 items-center">
         <div className="flex flex-col gap-2 items-center w-full">
           <ProductHeadingSideBar title="Product Categories" />
-          <ProductCategory categories={categories} setLoading={setLoading} loading={loading} />
+          <ProductCategory
+            categories={categories}
+            setLoading={setLoading}
+            loading={loading}
+            className="grid grid-cols-1 xl:grid-cols-2 gap-5 w-full"
+          />
         </div>
         <div className="flex flex-col gap-2 items-center w-full">
           <ProductHeadingSideBar title="Filter by price" />
@@ -64,14 +69,16 @@ export type ProductCategoryProps = {
   loading: boolean;
   setLoading: (value: boolean) => void;
   categories: Category[];
+  className?: string;
 };
 
 export const ProductCategory = ({
   loading,
   categories,
+  className,
 }: ProductCategoryProps) => {
   return loading ? (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-5">
+    <div className={cn(className)}>
       <Skeleton className="h-10 w-20" />
       <Skeleton className="h-10 w-20" />
       <Skeleton className="h-10 w-20" />
@@ -79,9 +86,9 @@ export const ProductCategory = ({
       <Skeleton className="h-10 w-20" />
     </div>
   ) : (
-    <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
+    <div className={cn(className)}>
       {categories.map((category: Category) => (
-        <Button variant="outline" key={category._id} className="w-24 h-12">
+        <Button variant="outline" key={category._id} className="w-24 h-12 lg:w-36">
           <span className="truncate">{category.title}</span>
         </Button>
       ))}
@@ -103,8 +110,8 @@ export const ProductFiltersByPrice = ({
   setMaxPrice,
 }: ProductFiltersByPriceProps) => {
   return (
-    <div className="flex flex-col gap-5">
-      <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-5 w-full">
+      <div className="flex flex-col gap-2">
         <Label htmlFor="min-price">Min</Label>
         <Slider
           name="min-price"
@@ -118,7 +125,7 @@ export const ProductFiltersByPrice = ({
           name="min-input"
           type="text"
           value={toCurrency({ amount: minPrice })}
-          className="border"
+          className="border mt-5"
           placeholder="min price"
           disabled
         />
@@ -137,7 +144,7 @@ export const ProductFiltersByPrice = ({
           type="text"
           name="max-input"
           value={toCurrency({ amount: maxPrice })}
-          className="border"
+          className="border mt-5"
           placeholder="max price"
           disabled
         />

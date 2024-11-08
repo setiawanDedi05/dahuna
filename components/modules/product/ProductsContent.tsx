@@ -3,7 +3,6 @@
 import { usePagination } from "@/hooks/usePagination";
 import { cn } from "@/lib/utils";
 import { Category, Product } from "@/types";
-import { LoaderIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { LoaderProducts, ProductContent, ProductTopBar } from "./";
 import { CustomPagination } from "@/components/custom/CustomPagination";

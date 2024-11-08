@@ -98,12 +98,12 @@ export const ProductTopBar = ({
               </DropdownMenuRadioGroup>
             </DropdownMenuContent>
           </DropdownMenu>
-          <span className="ms-4">Show:</span>
+          <span className="ms-4">Show: </span>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline">{perPage}</Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56">
+            <DropdownMenuContent>
               <DropdownMenuRadioGroup>
                 <DropdownMenuRadioItem
                   value="30"

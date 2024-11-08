@@ -28,3 +28,8 @@ export type Product = {
   description: string;
   real_price: string;
 };
+
+export type MidtransCheckoutSnapRequest = {
+  order_id: string;
+  gross_amount: string;
+};

@@ -16,9 +16,7 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
           },
         }}
         afterSignOutUrl="/sign-in"
-        afterSignInUrl="/dashboard"
-        signInFallbackRedirectUrl="/sign-in"
-        signUpFallbackRedirectUrl="/"
+        afterSignInUrl="/"
       >
         <TooltipProvider>{children}</TooltipProvider>
       </ClerkProvider>
