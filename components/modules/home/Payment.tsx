@@ -3,9 +3,6 @@
 import { Container } from "@/components/custom/Container";
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css/navigation";
-import "swiper/css";
-import "./style.css";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { CreditCard, Headset, Shield } from "lucide-react";
 import { motion } from "framer-motion";
