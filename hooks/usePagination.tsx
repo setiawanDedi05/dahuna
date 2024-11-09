@@ -1,6 +1,6 @@
 "use client";
 
-import { Product } from "@/types";
+import { Product } from "@/@types";
 import React, { useState } from "react";
 
 export const usePagination = (data?: Array<Product>, itemPerPage?: number) => {
@@ -32,3 +32,4 @@ export const usePagination = (data?: Array<Product>, itemPerPage?: number) => {
     maxPage,
   };
 };
+ 

@@ -16,7 +16,7 @@ import {
   ProductFiltersByPrice,
   ProductHeadingSideBar,
 } from "../modules/product/ProductSideBar";
-import { Category } from "@/types";
+import { Category } from "@/@types";
 
 type MobileSideBarProps = {
   minPrice: number;

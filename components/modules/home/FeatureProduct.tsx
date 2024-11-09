@@ -1,14 +1,10 @@
 "use client";
 
 import { Container } from "@/components/custom/Container";
-import { Currency } from "@/components/custom/Currency";
 import { Row } from "@/components/custom/Row";
-import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Product } from "@/types";
+import { Product } from "@/@types";
 import { motion } from "framer-motion";
-import { Heart, ShoppingCartIcon } from "lucide-react";
-import Image from "next/image";
 import React from "react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";

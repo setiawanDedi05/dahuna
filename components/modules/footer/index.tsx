@@ -47,18 +47,12 @@ export const Footer = () => {
               <h4 className="text-xl font-bold uppercase">Informations</h4>
             </li>
             <li className="flex gap-4 text-slate-300 hover:text-white">
-              <Link href="/account">My Account</Link>
-            </li>
-            <li className="flex gap-4 text-slate-300 hover:text-white">
-              <Link href={isSignedIn ? "/dashboard" : "/sign-in"}>
+              <Link href={isSignedIn ? "/" : "/sign-in"}>
                 {isSignedIn ? "Dashboard" : "Login"}
               </Link>
             </li>
             <li className="flex gap-4 text-slate-300 hover:text-white">
               <Link href="/account">My Cart</Link>
-            </li>
-            <li className="flex gap-4 text-slate-300 hover:text-white">
-              <Link href="/account">Checkout</Link>
             </li>
           </ul>
           <ul className="flex flex-col gap-4 md:mx-auto">

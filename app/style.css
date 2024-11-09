@@ -28,14 +28,14 @@
 .swiper-button-prev {
   background-color: #000;
   border-radius: 5px;
-  color: white;
+  color: white !important;
   width: 30px;
   height: 40px;
   padding-block: 10px;
 }
 .swiper-button-next::after,
 .swiper-button-prev::after {
-  font-size: 15px;
+  font-size: 15px !important;
 }
 
 .swiper-slide {

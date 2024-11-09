@@ -3,10 +3,7 @@
 import { Container } from "@/components/custom/Container";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
-import { Slide } from "@/types";
-import "swiper/css/navigation";
-import "swiper/css";
-import "./style.css";
+import { Slide } from "@/@types";
 import { motion } from "framer-motion";
 import useSWR, { Fetcher } from "swr";
 import { Skeleton } from "@/components/ui/skeleton";

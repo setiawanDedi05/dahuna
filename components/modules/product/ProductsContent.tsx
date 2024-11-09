@@ -2,7 +2,7 @@
 
 import { usePagination } from "@/hooks/usePagination";
 import { cn } from "@/lib/utils";
-import { Category, Product } from "@/types";
+import { Category, Product } from "@/@types";
 import React, { useEffect, useState } from "react";
 import { LoaderProducts, ProductContent, ProductTopBar } from "./";
 import { CustomPagination } from "@/components/custom/CustomPagination";

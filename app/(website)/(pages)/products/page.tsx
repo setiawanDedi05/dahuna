@@ -6,7 +6,7 @@ import {
   ProductsContent,
   ProductSideBar,
 } from "@/components/modules/product";
-import { Category } from "@/types";
+import { Category } from "@/@types";
 import React, { useEffect, useState } from "react";
 
 const page = () => {

@@ -1,20 +1,10 @@
 "use client";
 import React, { useState } from "react";
-import {
-  MinusCircle,
-  PlusCircle,
-  SearchIcon,
-  ShoppingCart,
-  User,
-  X,
-} from "lucide-react";
+import { SearchIcon, ShoppingCart, User, X } from "lucide-react";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "../ui/input";
 import { Badge } from "../ui/badge";
-import { motion } from "framer-motion";
-import Image from "next/image";
-import { toCurrency } from "./Currency";
 import { UserButton, useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { Checkout } from "../modules/product";
@@ -71,7 +61,7 @@ export const IconGroup = () => {
           </Link>
         </Button>
       )}
-      <Checkout show={show} />
+      {show && <Checkout show={show} setShow={setShow} />}
     </section>
   );
 };

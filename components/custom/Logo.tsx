@@ -10,6 +10,7 @@ export const Logo = () => {
         alt="logo"
         width={50}
         height={50}
+        priority
         className="object-contain border-r-2"
       />
       <div className="flex flex-col items-center justify-center">

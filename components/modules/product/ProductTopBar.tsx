@@ -1,5 +1,5 @@
 import { MobileSidebarLeft } from "@/components/custom/MobileSidebarLeft";
-import { Category, Product } from "@/types";
+import { Category, Product } from "@/@types";
 import React from "react";
 import {
   DropdownMenu,

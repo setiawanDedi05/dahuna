@@ -3,7 +3,7 @@
 import { Container } from "@/components/custom/Container";
 import { Row } from "@/components/custom/Row";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Category } from "@/types";
+import { Category } from "@/@types";
 import { motion } from "framer-motion";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";

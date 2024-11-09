@@ -33,3 +33,15 @@ export type MidtransCheckoutSnapRequest = {
   order_id: string;
   gross_amount: string;
 };
+
+export type Cart = {
+  _id: string;
+  productId: string;
+  userId: string;
+  quantity: number;
+  price: number;
+  product: Product;
+  user: {
+    id: string
+  }
+};
