@@ -5,32 +5,11 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Slide } from "@/@types";
 import { motion } from "framer-motion";
-import useSWR, { Fetcher } from "swr";
-import { Skeleton } from "@/components/ui/skeleton";
 
-export const HomeSlide = () => {
-  const fetcher: Fetcher<Slide[], string> = (args) =>
-    fetch(args)
-      .then((res) => res.json())
-      .then((res) => {
-        return res.content;
-      });
-
-  const { data, error, isLoading } = useSWR<Slide[]>(
-    process.env.NEXT_PUBLIC_URL + "/api/slides",
-    fetcher
-  );
-
-  if (error) {
-    return <>Error</>;
-  }
-
-  if (isLoading) {
-    return <div className="h-[900px] w-full p-10">
-      <Skeleton className="w-full h-full" />
-    </div> 
-  }
-
+type HomeSlideProps = {
+  slides: Slide[];
+};
+export const HomeSlide = ({ slides }: HomeSlideProps) => {
   return (
     <motion.section
       initial={{
@@ -57,10 +36,10 @@ export const HomeSlide = () => {
         >
           {
             <>
-              {data &&
-                data.map((item: Slide) => (
+              {slides &&
+                slides.map((item: Slide) => (
                   <SwiperSlide
-                    key={item._id}
+                    key={item.id}
                     style={{
                       background: `url(${item.image})`,
                       height: "800px",

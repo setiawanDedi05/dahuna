@@ -1,12 +1,14 @@
 import { cn } from "@/lib/utils";
 import { Category } from "@/@types";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
 import { toCurrency } from "@/components/custom/Currency";
 import { Label } from "@/components/ui/label";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Checkbox } from "@/components/ui/checkbox";
 
 type ProductSideBarProps = {
   minPrice: number;
@@ -29,12 +31,28 @@ export const ProductSideBar = ({
   className,
   categories,
 }: ProductSideBarProps) => {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+  const [isCheck, setIsCheck] = useState<boolean>(false);
+  const params = new URLSearchParams(searchParams);
+
+  function handleSearch(query: string, value: string) {
+    if (value) {
+      params.set(query, value);
+    } else {
+      params.delete(query);
+    }
+    replace(`${pathname}?${params.toString()}`);
+  }
+
   return (
     <div className={cn("h-full flex flex-col", className)}>
       <div className="flex flex-col gap-8 items-center">
         <div className="flex flex-col gap-2 items-center w-full">
           <ProductHeadingSideBar title="Product Categories" />
           <ProductCategory
+            handleSearch={handleSearch}
             categories={categories}
             setLoading={setLoading}
             loading={loading}
@@ -42,13 +60,29 @@ export const ProductSideBar = ({
           />
         </div>
         <div className="flex flex-col gap-2 items-center w-full">
-          <ProductHeadingSideBar title="Filter by price" />
-          <ProductFiltersByPrice
-            minPrice={minPrice}
-            maxPrice={maxPrice}
-            setMinPrice={setMinPrice}
-            setMaxPrice={setMaxPrice}
-          />
+          <div className="flex w-full gap-3 items-center justify-start">
+            <Checkbox
+              defaultChecked={isCheck}
+              onCheckedChange={(value: boolean) => {
+                if (!value) {
+                  params.delete("min");
+                  params.delete("max");
+                  replace(`${pathname}?${params.toString()}`);
+                }
+                setIsCheck(value);
+              }}
+            />
+            <ProductHeadingSideBar title="Filter by price" />
+          </div>
+          {isCheck && (
+            <ProductFiltersByPrice
+              handleSearch={handleSearch}
+              minPrice={minPrice}
+              maxPrice={maxPrice}
+              setMinPrice={setMinPrice}
+              setMaxPrice={setMaxPrice}
+            />
+          )}
         </div>
       </div>
     </div>
@@ -70,13 +104,17 @@ export type ProductCategoryProps = {
   setLoading: (value: boolean) => void;
   categories: Category[];
   className?: string;
+  handleSearch(query: string, value: string): void;
 };
 
 export const ProductCategory = ({
   loading,
   categories,
   className,
+  handleSearch,
 }: ProductCategoryProps) => {
+  const searchParams = useSearchParams();
+
   return loading ? (
     <div className={cn(className)}>
       <Skeleton className="h-10 w-20" />
@@ -88,7 +126,14 @@ export const ProductCategory = ({
   ) : (
     <div className={cn(className)}>
       {categories.map((category: Category) => (
-        <Button variant="outline" key={category._id} className="w-24 h-12 lg:w-36">
+        <Button
+          variant={
+            searchParams.get("category") === category._id ? "default" : "outline"
+          }
+          key={category._id}
+          className="w-24 h-12 lg:w-36"
+          onClick={() => handleSearch("category", category._id)}
+        >
           <span className="truncate">{category.title}</span>
         </Button>
       ))}
@@ -101,6 +146,7 @@ export type ProductFiltersByPriceProps = {
   setMinPrice: (value: number) => void;
   maxPrice: number;
   setMaxPrice: (value: number) => void;
+  handleSearch(query: string, value: string): void;
 };
 
 export const ProductFiltersByPrice = ({
@@ -108,6 +154,7 @@ export const ProductFiltersByPrice = ({
   setMinPrice,
   maxPrice,
   setMaxPrice,
+  handleSearch,
 }: ProductFiltersByPriceProps) => {
   return (
     <div className="flex flex-col gap-5 w-full">
@@ -119,7 +166,10 @@ export const ProductFiltersByPrice = ({
           max={maxPrice}
           min={0}
           step={500000}
-          onValueCommit={(e: number[]) => setMinPrice(e[0])}
+          onValueCommit={(e: number[]) => {
+            handleSearch("min", String(e[0]));
+            setMinPrice(e[0]);
+          }}
         />
         <Input
           name="min-input"
@@ -138,7 +188,10 @@ export const ProductFiltersByPrice = ({
           max={10000000}
           step={500000}
           min={minPrice}
-          onValueCommit={(e: number[]) => setMaxPrice(e[0])}
+          onValueCommit={(e: number[]) => {
+            handleSearch("max", String(e[0]));
+            setMaxPrice(e[0]);
+          }}
         />
         <Input
           type="text"

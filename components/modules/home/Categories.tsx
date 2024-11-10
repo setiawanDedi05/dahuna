@@ -9,53 +9,59 @@ import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import useSWR, { Fetcher } from "swr";
 import { Heading } from "./Heading";
+import { useRouter } from "next/navigation";
 
-export const Categories = () => {
+type CategoryProps = {
+  categories: Category[];
+};
+
+export const Categories = ({ categories }: CategoryProps) => {
+  const { push } = useRouter();
   const animation = {
     hide: { scale: 0, opacity: 0 },
     show: { scale: 1, opacity: 1 },
   };
 
-  const fetcher: Fetcher<Category[], string> = (args) =>
-    fetch(args)
-      .then((res) => res.json())
-      .then((res) => {
-        return res.content;
-      });
+  // const fetcher: Fetcher<Category[], string> = (args) =>
+  //   fetch(args)
+  //     .then((res) => res.json())
+  //     .then((res) => {
+  //       return res.content;
+  //     });
 
-  const { data, error, isLoading } = useSWR<Category[]>(
-    process.env.NEXT_PUBLIC_URL + "/api/categories",
-    fetcher
-  );
+  // const { data, error, isLoading } = useSWR<Category[]>(
+  //   process.env.NEXT_PUBLIC_URL + "/api/categories",
+  //   fetcher
+  // );
 
-  if (error) {
-    return <>Error</>;
-  }
+  // if (error) {
+  //   return <>Error</>;
+  // }
 
-  if (isLoading) {
-    return (
-      <div className="h-[700px] w-3/4 p-10 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 overflow-hidden">
-        <div className="h-[700px] flex flex-col -space-y-28">
-          <Skeleton className="w-full h-full" />
-          <div className="space-y-2">
-            <Skeleton className="h-10 w-[250px] md:w-[200px] mx-auto" />
-          </div>
-        </div>
-        <div className="h-[700px] flex flex-col -space-y-28">
-          <Skeleton className="w-full h-full" />
-          <div className="space-y-2">
-            <Skeleton className="h-10 w-[250px] md:w-[200px] mx-auto" />
-          </div>
-        </div>
-        <div className="h-[700px] flex flex-col -space-y-28">
-          <Skeleton className="w-full h-full" />
-          <div className="space-y-2">
-            <Skeleton className="h-10 w-[250px] md:w-[200px] mx-auto" />
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className="h-[700px] w-3/4 p-10 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 overflow-hidden">
+  //       <div className="h-[700px] flex flex-col -space-y-28">
+  //         <Skeleton className="w-full h-full" />
+  //         <div className="space-y-2">
+  //           <Skeleton className="h-10 w-[250px] md:w-[200px] mx-auto" />
+  //         </div>
+  //       </div>
+  //       <div className="h-[700px] flex flex-col -space-y-28">
+  //         <Skeleton className="w-full h-full" />
+  //         <div className="space-y-2">
+  //           <Skeleton className="h-10 w-[250px] md:w-[200px] mx-auto" />
+  //         </div>
+  //       </div>
+  //       <div className="h-[700px] flex flex-col -space-y-28">
+  //         <Skeleton className="w-full h-full" />
+  //         <div className="space-y-2">
+  //           <Skeleton className="h-10 w-[250px] md:w-[200px] mx-auto" />
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <motion.section
@@ -109,10 +115,10 @@ export const Categories = () => {
         >
           {
             <>
-              {data &&
-                data.map((item: Category, idx: number) => (
+              {categories &&
+                categories.map((item: Category, idx: number) => (
                   <SwiperSlide
-                    key={item._id}
+                    key={item.id}
                     style={{
                       background: `url(${item.image})`,
                       height: "500px",
@@ -122,7 +128,12 @@ export const Categories = () => {
                       backgroundRepeat: "no-repeat",
                     }}
                   >
-                    <div className="absolute bottom-10 text-primary-foreground hover:bg-primary-foreground/30 hover:text-primary font-extrabold text-2xl bg-black/30 backdrop-blur-sm p-5 rounded-sm shadow-xl duration-300 ease-linear cursor-pointer uppercase">
+                    <div
+                      className="absolute bottom-10 text-primary-foreground hover:bg-primary-foreground/30 hover:text-primary font-extrabold text-2xl bg-black/30 backdrop-blur-sm p-5 rounded-sm shadow-xl duration-300 ease-linear cursor-pointer left-[25%] right-[25%]"
+                      onClick={() => {
+                        push("/products?category=" + item.id);
+                      }}
+                    >
                       <motion.h2
                         initial={animation.hide}
                         whileInView={animation.show}

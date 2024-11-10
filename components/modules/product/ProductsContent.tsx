@@ -6,6 +6,7 @@ import { Category, Product } from "@/@types";
 import React, { useEffect, useState } from "react";
 import { LoaderProducts, ProductContent, ProductTopBar } from "./";
 import { CustomPagination } from "@/components/custom/CustomPagination";
+import { useSearchParams } from "next/navigation";
 
 type ProductContentProps = {
   minPrice: number;
@@ -28,6 +29,7 @@ export const ProductsContent = ({
   className,
   categories,
 }: ProductContentProps) => {
+  const searchParams = useSearchParams();
   const [products, setproducts] = useState<Product[]>();
   const [perPage, setperPage] = useState<number>(10);
   const [filter, setfilter] = useState<string>("latest");
@@ -42,15 +44,10 @@ export const ProductsContent = ({
 
   useEffect(() => {
     const getProducts = async () => {
+      const params = new URLSearchParams(searchParams);
       setLoading(true);
       await fetch(
-        process.env.NEXT_PUBLIC_URL +
-          "/api/products?" +
-          new URLSearchParams({
-            filter,
-            minPrice: String(minPrice),
-            maxPrice: String(maxPrice),
-          }).toString()
+        process.env.NEXT_PUBLIC_URL + "/api/products?" + params.toString()
       )
         .then((res) => res.json())
         .then((res) => {

@@ -1,32 +1,29 @@
 export type Category = {
-  _id: string;
+  id: string;
   title: string;
-  link: string;
   image: string;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export type Slide = {
-  _id: string;
-  name: string;
-  link: string;
-  slug: string;
   title: string;
-  description: string;
-  subtitle: string;
-  btn: string;
   image: string;
-  textColor: string;
-  createdAt: string;
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export type Product = {
-  _id: string;
-  title: string;
-  price: string;
-  images: string[];
-  category: string;
-  description: string;
-  real_price: string;
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  name: string;
+  description: string | null;
+  priceReal: number;
+  priceDisplay: number;
+  categoryId: string;
+  Images: ProductImages[];
 };
 
 export type MidtransCheckoutSnapRequest = {
@@ -41,7 +38,15 @@ export type Cart = {
   quantity: number;
   price: number;
   product: Product;
-  user: {
-    id: string
-  }
+  user?: {
+    id: string;
+  };
+};
+
+export type ProductImages = {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  url: string;
+  productId: string | null;
 };

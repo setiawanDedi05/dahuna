@@ -5,15 +5,26 @@ import {
   HomeSlide,
   Payment,
 } from "@/components/modules/home";
+import prisma from "@/lib/db";
 import { Metadata } from "next";
 
-export default function Home() {
+export default async function Home() {
+  const [slides, categories, products, brands] = await Promise.all([
+    prisma.slide.findMany(),
+    prisma.category.findMany(),
+    prisma.product.findMany({
+      include: {
+        Images: true,
+      },
+    }),
+    prisma.brands.findMany(),
+  ]);
   return (
     <>
-      <HomeSlide />
+      <HomeSlide slides={slides} />
       <Payment />
-      <Categories />
-      <FeatureProduct />
+      <Categories categories={categories} />
+      <FeatureProduct products={products} />
       <Brands />
     </>
   );

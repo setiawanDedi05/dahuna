@@ -2,55 +2,20 @@
 
 import { Container } from "@/components/custom/Container";
 import { Row } from "@/components/custom/Row";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Product } from "@/@types";
 import { motion } from "framer-motion";
 import React from "react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import useSWR, { Fetcher } from "swr";
 import { Heading } from "./Heading";
 import { ProductCard } from "../product";
 
-const SkeletonProductCard = () => (
-  <div className="h-[500px] flex flex-col space-y-3">
-    <Skeleton className="w-full h-3/4" />
-    <div className="space-y-2">
-      <Skeleton className="h-4 w-[250px] xl:w-[200px]" />
-      <Skeleton className="h-4 w-[200px] xl:w-[150px]" />
-    </div>
-  </div>
-);
+type FeatureProductProps = {
+  products: Product[];
+};
 
-export const FeatureProduct = () => {
-  const fetcher: Fetcher<Product[], string> = (args) =>
-    fetch(args)
-      .then((res) => res.json())
-      .then((res) => {
-        return res.content;
-      });
-
-  const { data, error, isLoading } = useSWR<Product[]>(
-    process.env.NEXT_PUBLIC_URL + "/api/products",
-    fetcher
-  );
-
-  if (error) {
-    return <>Error</>;
-  }
-
-  if (isLoading) {
-    return (
-      <div className="h-[500px] w-3/4 p-10 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-10 overflow-hidden">
-        <SkeletonProductCard />
-        <SkeletonProductCard />
-        <SkeletonProductCard />
-        <SkeletonProductCard />
-        <SkeletonProductCard />
-      </div>
-    );
-  }
-
+export const FeatureProduct = ({ products }: FeatureProductProps) => {
+  console.log({ products });
   return (
     <motion.section
       initial={{
@@ -104,10 +69,10 @@ export const FeatureProduct = () => {
         >
           {
             <>
-              {data &&
-                data.map((item: Product) => (
+              {products &&
+                products.map((item: Product) => (
                   <SwiperSlide
-                    key={item._id}
+                    key={item.id}
                     style={{
                       height: "500px",
                       width: "400px",
