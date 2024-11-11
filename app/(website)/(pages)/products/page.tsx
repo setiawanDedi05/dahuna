@@ -6,7 +6,6 @@ import {
   ProductSideBar,
 } from "@/components/modules/product";
 import prisma from "@/lib/db";
-import { Prisma } from "@prisma/client";
 
 export default async function Products({
   searchParams,
@@ -20,10 +19,8 @@ export default async function Products({
     page: string;
   };
 }) {
-  const orderBy = getOrderBy(
-    searchParams.sort
-  ) as Prisma.ProductOrderByWithRelationInput;
   const { category, min, max, limit, sort, page } = searchParams;
+  const orderBy = getOrderBy(sort) as any;
   const [categories, [total, products]] = await Promise.all([
     prisma.category.findMany(),
     prisma.$transaction([
