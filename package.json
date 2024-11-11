@@ -40,6 +40,7 @@
     "next": "14.2.16",
     "nodejs-base64-encode": "^1.1.0",
     "pg": "^8.13.1",
+    "prisma": "^5.22.0",
     "react": "^18",
     "react-dom": "^18",
     "start-server-and-test": "^2.0.8",
