@@ -45,7 +45,7 @@ export const CustomPagination = ({ total }: { total: number }) => {
           </Button>
         </PaginationItem>
         {Array.from({ length: totalPage }, (_, index) => (
-          <PaginationItem>
+          <PaginationItem key={index}>
             <Button
               variant={
                 Number(searchParams.get("page")) === index + 1
