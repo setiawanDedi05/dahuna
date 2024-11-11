@@ -1,3 +1,4 @@
+import { Category } from "@/@types";
 import {
   HoverCard,
   HoverCardContent,
@@ -19,7 +20,7 @@ export default async function MenuCategory() {
       </HoverCardTrigger>
       <HoverCardContent className="w-[400px]">
         <div className="grid grid-cols-2 gap-x-10 gap-y-5">
-          {categories.map((category) => (
+          {categories.map((category: Category) => (
             <Link
               key={category.id}
               href={`/products?category=${category.id}`}
