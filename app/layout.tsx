@@ -19,11 +19,17 @@ export const metadata: Metadata = {
   description: "Dahuna Clothing Shop",
 };
 
+declare global {
+  interface Window {
+    snap: any;
+  }
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) { ;;
   return (
     <html lang="en">
       <body

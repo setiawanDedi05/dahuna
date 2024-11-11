@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import { SearchIcon, ShoppingCart, User, X } from "lucide-react";
 import { Button } from "../ui/button";
@@ -8,6 +9,7 @@ import { Badge } from "../ui/badge";
 import { UserButton, useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { Checkout } from "../modules/product";
+import CartBadge from "../modules/product/cart/CartBadge";
 
 export const IconGroup = () => {
   const [open, setOpen] = useState(false);
@@ -40,12 +42,7 @@ export const IconGroup = () => {
         className="hidden relative lg:flex rounded-full size-[1.75rem]"
         onClick={() => setShow(!show)}
       >
-        <Badge
-          variant="destructive"
-          className="text-white rounded-full border-0 absolute -right-4 -top-1"
-        >
-          <span className="text-xs mx-auto">0</span>
-        </Badge>
+        <CartBadge />
         <ShoppingCart />
       </Button>
       {isSignedIn ? (

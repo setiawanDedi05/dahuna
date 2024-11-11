@@ -1,3 +1,5 @@
+"use client";
+
 import { Currency } from "@/components/custom/Currency";
 import { Button } from "@/components/ui/button";
 import { Product } from "@/@types";
@@ -5,13 +7,25 @@ import { ShoppingCartIcon } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 import Link from "next/link";
+import { addToCart } from "@/actions/addToCart";
+import { useAuth } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 export const ProductCard = ({ item }: { item: Product }) => {
+  const { userId } = useAuth();
+  const { refresh } = useRouter();
   return (
     <div className="p-3 w-full h-full border flex flex-col justify-start gap-1">
       <div className="flex group/image h-[400px] relative overflow-hidden">
         <div className="absolute z-10 left-1 top-3 flex gap-1">
-          <Button variant="outline" size="icon">
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => {
+              addToCart(item, userId!);
+              refresh();
+            }}
+          >
             <ShoppingCartIcon className="size-11" />
           </Button>
         </div>

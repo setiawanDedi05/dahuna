@@ -1,89 +1,28 @@
-"use client";
-
-import { usePagination } from "@/hooks/usePagination";
 import { cn } from "@/lib/utils";
 import { Category, Product } from "@/@types";
-import React, { useEffect, useState } from "react";
-import { LoaderProducts, ProductContent, ProductTopBar } from "./";
+import { ProductContent, ProductTopBar } from "./";
 import { CustomPagination } from "@/components/custom/CustomPagination";
-import { useSearchParams } from "next/navigation";
 
 type ProductContentProps = {
-  minPrice: number;
-  setMinPrice: (value: number) => void;
-  maxPrice: number;
-  setMaxPrice: (value: number) => void;
-  loading: boolean;
-  setLoading: (value: boolean) => void;
   className?: string;
   categories: Category[];
+  products: Product[];
+  total: number;
 };
 
-export const ProductsContent = ({
-  minPrice,
-  setMinPrice,
-  maxPrice,
-  setMaxPrice,
-  loading,
-  setLoading,
+export function ProductsContent({
   className,
   categories,
-}: ProductContentProps) => {
-  const searchParams = useSearchParams();
-  const [products, setproducts] = useState<Product[]>();
-  const [perPage, setperPage] = useState<number>(10);
-  const [filter, setfilter] = useState<string>("latest");
-  const [page, setpage] = useState(1);
-  const count = products && Math.ceil(products.length / perPage);
-  const _DATA = usePagination(products, perPage);
-
-  const handleChange = (e: React.ChangeEvent<unknown>, p: number) => {
-    setpage(p);
-    _DATA.jump(p);
-  };
-
-  useEffect(() => {
-    const getProducts = async () => {
-      const params = new URLSearchParams(searchParams);
-      setLoading(true);
-      await fetch(
-        process.env.NEXT_PUBLIC_URL + "/api/products?" + params.toString()
-      )
-        .then((res) => res.json())
-        .then((res) => {
-          setproducts(res.content);
-        })
-        .catch((error) => console.log(error))
-        .finally(() => setLoading(false));
-    };
-
-    getProducts();
-  }, [page, filter, minPrice, maxPrice]);
-
-  if (loading || !_DATA.currentData()) return <LoaderProducts />;
-
+  products,
+  total,
+}: ProductContentProps) {
   return (
     <div className={cn(className)}>
-      <ProductTopBar
-        minPrice={minPrice}
-        setMinPrice={setMinPrice}
-        maxPrice={maxPrice}
-        setMaxPrice={setMaxPrice}
-        loading={loading}
-        setLoading={setLoading}
-        perPage={perPage}
-        setPerPage={setperPage}
-        filter={filter}
-        setFilter={setfilter}
-        maxPage={_DATA.maxPage ?? 1}
-        page={page}
-        products={products}
-        categories={categories}
-      />
-      <ProductContent products={_DATA.currentData()} />
+      <ProductTopBar categories={categories} />
+      <ProductContent products={products} />
       <div className="py-10 flex justify-between mt-auto">
-        <CustomPagination />
+        <CustomPagination total={total} />
       </div>
     </div>
   );
-};
+}

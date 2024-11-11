@@ -4,9 +4,9 @@ import { Logo } from "@/components/custom/Logo";
 import { MainMenu } from "@/components/custom/MainMenu";
 import { MobileButton } from "@/components/custom/MobileButton";
 import { Row } from "@/components/custom/Row";
-import React from "react";
 
 export const Main = () => {
+
   return (
     <section className="h-full">
       <Container>
@@ -14,7 +14,7 @@ export const Main = () => {
           <MobileButton />
           <Logo />
           <MainMenu />
-          <IconGroup />
+          <IconGroup/>
         </Row>
       </Container>
     </section>

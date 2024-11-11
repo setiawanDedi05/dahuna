@@ -1,40 +1,27 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import { Category } from "@/@types";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
 import { toCurrency } from "@/components/custom/Currency";
 import { Label } from "@/components/ui/label";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Checkbox } from "@/components/ui/checkbox";
 
 type ProductSideBarProps = {
-  minPrice: number;
-  setMinPrice: (value: number) => void;
-  maxPrice: number;
-  setMaxPrice: (value: number) => void;
-  loading: boolean;
-  setLoading: (value: boolean) => void;
   className?: string;
   categories: Category[];
 };
 
 export const ProductSideBar = ({
-  minPrice,
-  setMinPrice,
-  maxPrice,
-  setMaxPrice,
-  loading,
-  setLoading,
   className,
   categories,
 }: ProductSideBarProps) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
-  const [isCheck, setIsCheck] = useState<boolean>(false);
   const params = new URLSearchParams(searchParams);
 
   function handleSearch(query: string, value: string) {
@@ -54,35 +41,12 @@ export const ProductSideBar = ({
           <ProductCategory
             handleSearch={handleSearch}
             categories={categories}
-            setLoading={setLoading}
-            loading={loading}
             className="grid grid-cols-1 xl:grid-cols-2 gap-5 w-full"
           />
         </div>
         <div className="flex flex-col gap-2 items-center w-full">
-          <div className="flex w-full gap-3 items-center justify-start">
-            <Checkbox
-              defaultChecked={isCheck}
-              onCheckedChange={(value: boolean) => {
-                if (!value) {
-                  params.delete("min");
-                  params.delete("max");
-                  replace(`${pathname}?${params.toString()}`);
-                }
-                setIsCheck(value);
-              }}
-            />
-            <ProductHeadingSideBar title="Filter by price" />
-          </div>
-          {isCheck && (
-            <ProductFiltersByPrice
-              handleSearch={handleSearch}
-              minPrice={minPrice}
-              maxPrice={maxPrice}
-              setMinPrice={setMinPrice}
-              setMaxPrice={setMaxPrice}
-            />
-          )}
+          <ProductHeadingSideBar title="Filter by price" />
+          <ProductFiltersByPrice handleSearch={handleSearch} />
         </div>
       </div>
     </div>
@@ -100,39 +64,28 @@ export const ProductHeadingSideBar = ({ title }: { title: string }) => {
 };
 
 export type ProductCategoryProps = {
-  loading: boolean;
-  setLoading: (value: boolean) => void;
   categories: Category[];
   className?: string;
   handleSearch(query: string, value: string): void;
 };
 
 export const ProductCategory = ({
-  loading,
   categories,
   className,
   handleSearch,
 }: ProductCategoryProps) => {
   const searchParams = useSearchParams();
 
-  return loading ? (
-    <div className={cn(className)}>
-      <Skeleton className="h-10 w-20" />
-      <Skeleton className="h-10 w-20" />
-      <Skeleton className="h-10 w-20" />
-      <Skeleton className="h-10 w-20" />
-      <Skeleton className="h-10 w-20" />
-    </div>
-  ) : (
+  return (
     <div className={cn(className)}>
       {categories.map((category: Category) => (
         <Button
           variant={
-            searchParams.get("category") === category._id ? "default" : "outline"
+            searchParams.get("category") === category.id ? "default" : "outline"
           }
-          key={category._id}
+          key={category.id}
           className="w-24 h-12 lg:w-36"
-          onClick={() => handleSearch("category", category._id)}
+          onClick={() => handleSearch("category", category.id)}
         >
           <span className="truncate">{category.title}</span>
         </Button>
@@ -142,39 +95,38 @@ export const ProductCategory = ({
 };
 
 export type ProductFiltersByPriceProps = {
-  minPrice: number;
-  setMinPrice: (value: number) => void;
-  maxPrice: number;
-  setMaxPrice: (value: number) => void;
   handleSearch(query: string, value: string): void;
 };
 
 export const ProductFiltersByPrice = ({
-  minPrice,
-  setMinPrice,
-  maxPrice,
-  setMaxPrice,
   handleSearch,
 }: ProductFiltersByPriceProps) => {
+  const searchParams = useSearchParams();
+  const [min, setMin] = useState<number>(Number(searchParams.get("min")));
+  const [max, setMax] = useState<number>(Number(searchParams.get("max")));
   return (
     <div className="flex flex-col gap-5 w-full">
       <div className="flex flex-col gap-2">
         <Label htmlFor="min-price">Min</Label>
         <Slider
           name="min-price"
-          defaultValue={[minPrice]}
-          max={maxPrice}
+          defaultValue={[min]}
+          max={1000000}
           min={0}
-          step={500000}
+          step={100000}
           onValueCommit={(e: number[]) => {
+            setMin(e[0]);
+            if (e[0] >= max) {
+              setMax(e[0]);
+              handleSearch("max", String(e[0]));
+            }
             handleSearch("min", String(e[0]));
-            setMinPrice(e[0]);
           }}
         />
         <Input
           name="min-input"
           type="text"
-          value={toCurrency({ amount: minPrice })}
+          value={toCurrency({ amount: min })}
           className="border mt-5"
           placeholder="min price"
           disabled
@@ -184,19 +136,19 @@ export const ProductFiltersByPrice = ({
         <Label htmlFor="max-price">Max</Label>
         <Slider
           name="max-price"
-          defaultValue={[maxPrice]}
+          defaultValue={[max]}
           max={10000000}
           step={500000}
-          min={minPrice}
+          min={min}
           onValueCommit={(e: number[]) => {
             handleSearch("max", String(e[0]));
-            setMaxPrice(e[0]);
+            setMax(e[0]);
           }}
         />
         <Input
           type="text"
           name="max-input"
-          value={toCurrency({ amount: maxPrice })}
+          value={toCurrency({ amount: max })}
           className="border mt-5"
           placeholder="max price"
           disabled

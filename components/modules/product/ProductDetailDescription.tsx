@@ -1,6 +1,7 @@
 "use client";
 
 import { Cart, Product } from "@/@types";
+import { addToCart } from "@/actions/addToCart";
 import { toCurrency } from "@/components/custom/Currency";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@clerk/nextjs";
@@ -17,14 +18,17 @@ export const ProductDetailDescription = ({
 }: ProductDetailImageProps) => {
   const { user } = useUser();
   const [qty, setQty] = useState<number>(1);
+
   const handleCheckout = async () => {
     const cart: Cart = {
-      _id: "",
-      product: product!,
+      id: "",
+      Product: product!,
       productId: product!.id,
       userId: user!.id,
       quantity: qty,
       price: product!.priceDisplay,
+      createdAt: Date.now().toString(),
+      updatedAt: Date.now().toString(),
     };
     try {
       const response = await axios({
@@ -94,7 +98,9 @@ export const ProductDetailDescription = ({
         <Button
           variant="outline"
           className="h-14 lg:w-52 uppercase font-bold"
-          onClick={handleCheckout}
+          onClick={() => {
+            addToCart(product!, user?.id!, qty);
+          }}
         >
           Save to Cart
         </Button>

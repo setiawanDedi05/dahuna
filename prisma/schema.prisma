@@ -83,9 +83,12 @@ model CartItem {
   userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  status    String   @default("mark")
 
   Product Product @relation(fields: [productId], references: [id])
   User    User    @relation(fields: [userId], references: [id])
+
+  @@unique([productId, userId, status], name: "productId_userId_status")
 }
 
 model Order {

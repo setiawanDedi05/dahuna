@@ -6,7 +6,6 @@ import {
   Payment,
 } from "@/components/modules/home";
 import prisma from "@/lib/db";
-import { Metadata } from "next";
 
 export default async function Home() {
   const [slides, categories, products, brands] = await Promise.all([
@@ -29,8 +28,3 @@ export default async function Home() {
     </>
   );
 }
-
-export const metaData: Metadata = {
-  title: "Dahuna - Home page",
-  description: "Ecommerce Clothing shop",
-};

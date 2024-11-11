@@ -41,7 +41,7 @@ const config: Config = {
   			}
   		},
   		container: {
-  			center: 'true',
+  			center: true,
   			screens: {
   				xs: '360px',
   				sm: '575px',

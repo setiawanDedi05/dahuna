@@ -1,6 +1,8 @@
+"use client";
+
 import { MobileSidebarLeft } from "@/components/custom/MobileSidebarLeft";
-import { Category, Product } from "@/@types";
-import React from "react";
+import { Category, SortingEnum } from "@/@types";
+import React, { useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,57 +12,32 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 type ProductTopBarProps = {
-  minPrice: number;
-  setMinPrice: (value: number) => void;
-  maxPrice: number;
-  setMaxPrice: (value: number) => void;
-  loading: boolean;
-  setLoading: (value: boolean) => void;
-  perPage: number;
-  setPerPage: (value: number) => void;
-  filter: string;
-  setFilter: (value: string) => void;
-  maxPage: number;
-  page: number;
-  products?: Product[];
   categories: Category[];
 };
 
-export const ProductTopBar = ({
-  minPrice,
-  setMinPrice,
-  maxPrice,
-  setMaxPrice,
-  loading,
-  setLoading,
-  perPage,
-  setPerPage,
-  filter,
-  setFilter,
-  maxPage,
-  page,
-  products,
-  categories,
-}: ProductTopBarProps) => {
+export const ProductTopBar = ({ categories }: ProductTopBarProps) => {
+  const [filter, setFilter] = useState<SortingEnum>(SortingEnum.Latest);
+  const [perPage, setPerPage] = useState<number>(10);
+  const searchParams = useSearchParams();
+  const params = new URLSearchParams(searchParams);
+  const { replace } = useRouter();
+  const pathname = usePathname();
+
+  function handleSearch(query: string, value: string) {
+    if (value) {
+      params.set(query, value);
+    } else {
+      params.delete(query);
+    }
+    replace(`${pathname}?${params.toString()}`);
+  }
   return (
     <div className="lg:flex items-center justify-between w-full mb-10">
       <div className="flex items-center gap-4 flex-1 justify-between">
-        <MobileSidebarLeft
-          minPrice={minPrice}
-          setMinPrice={setMinPrice}
-          maxPrice={maxPrice}
-          setMaxPrice={setMaxPrice}
-          loading={loading}
-          setLoading={setLoading}
-          categories={categories}
-        />
-        <div className="hidden lg:block">
-          Showing{" "}
-          {maxPage === page ? products && products.length : perPage * page} of{" "}
-          {products && products.length} results
-        </div>
+        <MobileSidebarLeft categories={categories} />
         <div className="ms-auto">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -73,25 +50,37 @@ export const ProductTopBar = ({
               <DropdownMenuRadioGroup value="bottom">
                 <DropdownMenuRadioItem
                   value="top"
-                  onClick={() => setFilter("alphabetic")}
+                  onClick={() => {
+                    setFilter(SortingEnum.Alphabetic);
+                    handleSearch("sort", SortingEnum.Alphabetic.toLowerCase());
+                  }}
                 >
                   Alphabetic
                 </DropdownMenuRadioItem>
                 <DropdownMenuRadioItem
                   value={filter}
-                  onClick={() => setFilter("priceLowToHigh")}
+                  onClick={() => {
+                    setFilter(SortingEnum.PriceToHigh);
+                    handleSearch("sort", SortingEnum.PriceToHigh.toLowerCase());
+                  }}
                 >
                   Price: Low to High
                 </DropdownMenuRadioItem>
                 <DropdownMenuRadioItem
                   value={filter}
-                  onClick={() => setFilter("priceHighToLow")}
+                  onClick={() => {
+                    setFilter(SortingEnum.PriceToLow);
+                    handleSearch("sort", SortingEnum.PriceToLow.toLowerCase());
+                  }}
                 >
                   Price: High to Low
                 </DropdownMenuRadioItem>
                 <DropdownMenuRadioItem
                   value={filter}
-                  onClick={() => setFilter("latest")}
+                  onClick={() => {
+                    setFilter(SortingEnum.Latest);
+                    handleSearch("sort", SortingEnum.Latest.toLowerCase());
+                  }}
                 >
                   Latest
                 </DropdownMenuRadioItem>
@@ -107,21 +96,30 @@ export const ProductTopBar = ({
               <DropdownMenuRadioGroup>
                 <DropdownMenuRadioItem
                   value="30"
-                  onClick={() => setPerPage(30)}
+                  onClick={() => {
+                    setPerPage(10);
+                    handleSearch("limit", "10");
+                  }}
                 >
-                  30
+                  10
                 </DropdownMenuRadioItem>
                 <DropdownMenuRadioItem
                   value="20"
-                  onClick={() => setPerPage(20)}
+                  onClick={() => {
+                    setPerPage(20);
+                    handleSearch("limit", "20");
+                  }}
                 >
                   20
                 </DropdownMenuRadioItem>
                 <DropdownMenuRadioItem
                   value="10"
-                  onClick={() => setPerPage(10)}
+                  onClick={() => {
+                    setPerPage(10);
+                    handleSearch("limit", "30");
+                  }}
                 >
-                  10
+                  30
                 </DropdownMenuRadioItem>
               </DropdownMenuRadioGroup>
             </DropdownMenuContent>

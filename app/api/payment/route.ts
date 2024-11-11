@@ -33,10 +33,10 @@ export const POST = async (req: Request) => {
 
   const newCart = cart.map((item) => {
     return {
-      id: item._id,
+      id: item.id,
       price: item.price,
       quantity: item.quantity,
-      name: item.product.name,
+      name: item.Product.name,
     };
   });
   let data = JSON.stringify({

@@ -15,7 +15,7 @@ export const ProductContent = ({ products }: ProductContentProps) => {
   ) : (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 relative">
       {products?.map((item: Product) => (
-        <ProductCard key={item._id} item={item} />
+        <ProductCard key={item.id} item={item} />
       ))}
     </div>
   );

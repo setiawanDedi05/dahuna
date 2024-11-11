@@ -3,18 +3,11 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
   const userId = req.nextUrl.searchParams.get("userId");
-  const data = await prisma.cartItem.findMany({
+  const data = await prisma.cartItem.count({
     where: {
       userId: userId!,
       status: {
-        contains: "mark"
-      }
-    },
-    include: {
-      Product: {
-        include: {
-          Images: true,
-        },
+        contains: "mark",
       },
     },
   });

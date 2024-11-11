@@ -32,15 +32,16 @@ export type MidtransCheckoutSnapRequest = {
 };
 
 export type Cart = {
-  _id: string;
-  productId: string;
-  userId: string;
+  id: string;
   quantity: number;
   price: number;
-  product: Product;
-  user?: {
-    id: string;
-  };
+  productId: string;
+  userId: string;
+  status?: string;
+  createdAt: string | Date;
+  updatedAt: string | Date;
+
+  Product: Product;
 };
 
 export type ProductImages = {
@@ -50,3 +51,10 @@ export type ProductImages = {
   url: string;
   productId: string | null;
 };
+
+export enum SortingEnum {
+  Alphabetic = "Alphabetic",
+  PriceToHigh = "Price Low To High",
+  PriceToLow = "Price High To Low",
+  Latest = "Latest",
+}

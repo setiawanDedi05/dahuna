@@ -1,64 +1,95 @@
-"use client";
-
+import { SortingEnum } from "@/@types";
 import { Container } from "@/components/custom/Container";
 import {
   ProductBreadCrumb,
   ProductsContent,
   ProductSideBar,
 } from "@/components/modules/product";
-import { Category } from "@/@types";
-import React, { useEffect, useState } from "react";
+import prisma from "@/lib/db";
+import { Prisma } from "@prisma/client";
 
-const page = () => {
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(10000000);
-  const [loading, setLoading] = useState(false);
-  const [categories, setCategories] = useState<Category[]>([]);
-
-  useEffect(() => {
-    const getCategories = async () => {
-      setLoading(true);
-      await fetch(process.env.NEXT_PUBLIC_URL + "/api/categories")
-        .then((res) => res.json())
-        .then((res) => {
-          setCategories([]);
-          setCategories(res.content);
-        })
-        .catch((error) => console.log(error))
-        .finally(() => setLoading(false));
-    };
-
-    getCategories();
-  }, [setLoading]);
+export default async function Products({
+  searchParams,
+}: {
+  searchParams: {
+    category: string;
+    min: string;
+    max: string;
+    limit: string;
+    sort: string;
+    page: string;
+  };
+}) {
+  const orderBy = getOrderBy(
+    searchParams.sort
+  ) as Prisma.ProductOrderByWithRelationInput;
+  const { category, min, max, limit, sort, page } = searchParams;
+  const [categories, [total, products]] = await Promise.all([
+    prisma.category.findMany(),
+    prisma.$transaction([
+      prisma.product.count({
+        where: {
+          categoryId: category ? category : { contains: "c" },
+          priceDisplay: {
+            gte: Number(min ?? 0),
+            lte: Number(max ?? 1000000),
+          },
+        },
+      }),
+      prisma.product.findMany({
+        where: {
+          categoryId: category ? category : { contains: "c" },
+          priceDisplay: {
+            gte: Number(min ?? 0),
+            lte: Number(max ?? 1000000),
+          },
+        },
+        orderBy: orderBy,
+        skip: Number(page) * Number(limit) - 1 || 0,
+        take: Number(limit) || 10,
+        include: {
+          Images: true,
+        },
+      }),
+    ]),
+  ]);
 
   return (
     <section className="my-10">
       <Container>
         <ProductBreadCrumb />
         <div className="grid grid-cols-1 md:grid-cols-[100px_1fr] lg:grid-cols-[200px_1fr] xl:grid-cols-[300px_1fr] gap-12 items-start">
-          <ProductSideBar
-            minPrice={minPrice}
-            setMinPrice={setMinPrice}
-            maxPrice={maxPrice}
-            setMaxPrice={setMaxPrice}
-            loading={loading}
-            setLoading={setLoading}
-            categories={categories}
-            className="hidden md:flex"
-          />
+          <ProductSideBar categories={categories} className="hidden md:flex" />
           <ProductsContent
-            minPrice={minPrice}
-            setMinPrice={setMinPrice}
-            maxPrice={maxPrice}
-            setMaxPrice={setMaxPrice}
-            loading={loading}
-            setLoading={setLoading}
             categories={categories}
+            products={products}
+            total={total}
           />
         </div>
       </Container>
     </section>
   );
-};
+}
 
-export default page;
+const getOrderBy = (sort: string) => {
+  switch (sort) {
+    case SortingEnum.Alphabetic.toLowerCase():
+      return {
+        name: "asc",
+      };
+    case SortingEnum.Latest.toLowerCase():
+      return {
+        updatedAt: "desc",
+      };
+    case SortingEnum.PriceToHigh.toLowerCase():
+      return {
+        priceDisplay: "desc",
+      };
+    case SortingEnum.PriceToLow.toLowerCase():
+      return {
+        priceDisplay: "asc",
+      };
+    default:
+      return {};
+  }
+};
