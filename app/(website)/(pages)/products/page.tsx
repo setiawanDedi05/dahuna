@@ -21,6 +21,13 @@ export default async function Products({
 }) {
   const { category, min, max, limit, sort, page } = searchParams;
   const orderBy = getOrderBy(sort) as any;
+  const slug = category
+    ? {
+        Category: {
+          slug: category,
+        },
+      }
+    : {};
   const [categories, [total, products]] = await Promise.all([
     prisma.category.findMany(),
     prisma.$transaction([
@@ -35,7 +42,7 @@ export default async function Products({
       }),
       prisma.product.findMany({
         where: {
-          categoryId: category ? category : { contains: "c" },
+          ...slug,
           priceDisplay: {
             gte: Number(min ?? 0),
             lte: Number(max ?? 1000000),

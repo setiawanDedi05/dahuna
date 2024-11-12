@@ -2,6 +2,7 @@ export type Category = {
   id: string;
   title: string;
   image: string;
+  slug: string;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -49,7 +50,7 @@ export type ProductImages = {
   createdAt: Date;
   updatedAt: Date;
   url: string;
-  productId: string | null;
+  productId?: string | null;
 };
 
 export enum SortingEnum {

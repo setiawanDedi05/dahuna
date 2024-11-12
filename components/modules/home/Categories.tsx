@@ -2,12 +2,10 @@
 
 import { Container } from "@/components/custom/Container";
 import { Row } from "@/components/custom/Row";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Category } from "@/@types";
 import { motion } from "framer-motion";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import useSWR, { Fetcher } from "swr";
 import { Heading } from "./Heading";
 import { useRouter } from "next/navigation";
 
@@ -21,47 +19,6 @@ export const Categories = ({ categories }: CategoryProps) => {
     hide: { scale: 0, opacity: 0 },
     show: { scale: 1, opacity: 1 },
   };
-
-  // const fetcher: Fetcher<Category[], string> = (args) =>
-  //   fetch(args)
-  //     .then((res) => res.json())
-  //     .then((res) => {
-  //       return res.content;
-  //     });
-
-  // const { data, error, isLoading } = useSWR<Category[]>(
-  //   process.env.NEXT_PUBLIC_URL + "/api/categories",
-  //   fetcher
-  // );
-
-  // if (error) {
-  //   return <>Error</>;
-  // }
-
-  // if (isLoading) {
-  //   return (
-  //     <div className="h-[700px] w-3/4 p-10 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 overflow-hidden">
-  //       <div className="h-[700px] flex flex-col -space-y-28">
-  //         <Skeleton className="w-full h-full" />
-  //         <div className="space-y-2">
-  //           <Skeleton className="h-10 w-[250px] md:w-[200px] mx-auto" />
-  //         </div>
-  //       </div>
-  //       <div className="h-[700px] flex flex-col -space-y-28">
-  //         <Skeleton className="w-full h-full" />
-  //         <div className="space-y-2">
-  //           <Skeleton className="h-10 w-[250px] md:w-[200px] mx-auto" />
-  //         </div>
-  //       </div>
-  //       <div className="h-[700px] flex flex-col -space-y-28">
-  //         <Skeleton className="w-full h-full" />
-  //         <div className="space-y-2">
-  //           <Skeleton className="h-10 w-[250px] md:w-[200px] mx-auto" />
-  //         </div>
-  //       </div>
-  //     </div>
-  //   );
-  // }
 
   return (
     <motion.section
@@ -131,7 +88,7 @@ export const Categories = ({ categories }: CategoryProps) => {
                     <div
                       className="absolute bottom-10 text-primary-foreground hover:bg-primary-foreground/30 hover:text-primary font-extrabold text-2xl bg-black/30 backdrop-blur-sm p-5 rounded-sm shadow-xl duration-300 ease-linear cursor-pointer left-[25%] right-[25%]"
                       onClick={() => {
-                        push("/products?category=" + item.id);
+                        push("/products?category=" + item.slug);
                       }}
                     >
                       <motion.h2
@@ -140,7 +97,7 @@ export const Categories = ({ categories }: CategoryProps) => {
                         transition={{
                           delay: 0.1,
                         }}
-                        className="drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] hover:drop-shadow-[0_1.2px_1.2px_rgba(255,255,255,0.8)]"
+                        className="drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] hover:drop-shadow-[0_1.2px_1.2px_rgba(255,255,255,0.8)] capitalize"
                       >
                         {item.title}
                       </motion.h2>

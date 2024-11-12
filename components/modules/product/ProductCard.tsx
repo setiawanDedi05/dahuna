@@ -30,18 +30,11 @@ export const ProductCard = ({ item }: { item: Product }) => {
           </Button>
         </div>
         <Image
-          src={item.Images && item.Images[0].url}
+          src={item.Images[0]?.url ?? "/assets/images/default-image.jpg"}
           alt={item.name}
           width="300"
           height="400"
-          className="duration-300 ease-linear group-hover/image:translate-x-full !h-[400px] !w-[300px] object-cover"
-        />
-        <Image
-          src={item.Images && item.Images[1].url}
-          alt={item.name}
-          width="300"
-          height="400"
-          className="absolute duration-300 ease-linear -translate-x-full group-hover/image:translate-x-0 !h-[400px] !w-[300px] object-cover"
+          className="duration-300 ease-linear !h-[400px] !w-[300px] object-cover"
         />
       </div>
       <Link href={`/products/${item.id}`}>

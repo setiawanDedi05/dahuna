@@ -81,11 +81,11 @@ export const ProductCategory = ({
       {categories.map((category: Category) => (
         <Button
           variant={
-            searchParams.get("category") === category.id ? "default" : "outline"
+            searchParams.get("category") === category.slug ? "default" : "outline"
           }
           key={category.id}
           className="w-24 h-12 lg:w-36"
-          onClick={() => handleSearch("category", category.id)}
+          onClick={() => handleSearch("category", category.slug)}
         >
           <span className="truncate">{category.title}</span>
         </Button>

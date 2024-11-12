@@ -5,7 +5,6 @@ import { SearchIcon, ShoppingCart, User, X } from "lucide-react";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "../ui/input";
-import { Badge } from "../ui/badge";
 import { UserButton, useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { Checkout } from "../modules/product";

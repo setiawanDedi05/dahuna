@@ -6,9 +6,7 @@ export const GET = async (req: NextRequest) => {
   const data = await prisma.cartItem.findMany({
     where: {
       userId: userId!,
-      status: {
-        contains: "mark"
-      }
+      status:  "mark"
     },
     include: {
       Product: {

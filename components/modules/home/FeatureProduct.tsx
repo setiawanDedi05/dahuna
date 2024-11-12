@@ -15,7 +15,6 @@ type FeatureProductProps = {
 };
 
 export const FeatureProduct = ({ products }: FeatureProductProps) => {
-  console.log({ products });
   return (
     <motion.section
       initial={{

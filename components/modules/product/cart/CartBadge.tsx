@@ -6,6 +6,7 @@ import useSWR, { Fetcher } from "swr";
 
 export default function CartBadge() {
   const { userId } = useAuth();
+
   const fetcher: Fetcher<number, string> = (args) =>
     fetch(args)
       .then((res) => res.json())
@@ -18,13 +19,17 @@ export default function CartBadge() {
     fetcher
   );
 
+  if (!userId) {
+    return <></>;
+  }
+
   if (error) {
     return (
       <Badge
         variant="destructive"
         className="text-white rounded-full border-0 absolute -right-4 -top-1"
       >
-         ?
+        ?
       </Badge>
     );
   }

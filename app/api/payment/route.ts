@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { randomUUID } from "crypto";
 import Midtrans from "midtrans-client";
 import { Cart } from "@/@types";
+import prisma from "@/lib/db";
 
 let snap = new Midtrans.Snap({
   isProduction: false,
@@ -16,6 +16,7 @@ export const POST = async (req: Request) => {
   }: {
     cart: Cart[];
     user: {
+      id: string;
       fullName: string;
       firstName: string;
       lastName: string;
@@ -25,6 +26,7 @@ export const POST = async (req: Request) => {
       primaryPhoneNumber: string;
     };
   } = await req.json();
+
   const totalAmount = cart.reduce(
     (accumulator, currenValue) =>
       accumulator + currenValue.price * currenValue.quantity,
@@ -39,46 +41,80 @@ export const POST = async (req: Request) => {
       name: item.Product.name,
     };
   });
-  let data = JSON.stringify({
-    transaction_details: {
-      order_id: `${randomUUID()}-${Date.now()}`,
-      gross_amount: totalAmount,
-    },
-    credit_card: {
-      secure: true,
-    },
-    item_details: newCart,
-    customer_details: {
-      first_name: user.firstName,
-      last_name: user.lastName,
-      email: user.primaryEmailAddress.emailAddress,
-      phone: user.primaryPhoneNumber,
-      billing_address: {
-        first_name: user.firstName,
-        last_name: user.lastName,
-        email: user.primaryEmailAddress.emailAddress,
-        phone: user.primaryPhoneNumber,
-        address: "",
-        city: "",
-        postal_code: "",
-        country_code: "IDN",
-      },
-      shipping_address: {
-        first_name: user.firstName,
-        last_name: user.lastName,
-        email: user.primaryEmailAddress.emailAddress,
-        phone: user.primaryPhoneNumber,
-        address: "",
-        city: "",
-        postal_code: "",
-        country_code: "",
-      },
-    },
-  });
+
   try {
+    const order = await prisma.order.create({
+      data: {
+        userId: user.id,
+        orderStatus: "unpaid",
+        totalAmount,
+      },
+    });
+
+    let data = JSON.stringify({
+      transaction_details: {
+        order_id: order.id,
+        gross_amount: totalAmount,
+      },
+      credit_card: {
+        secure: true,
+      },
+      item_details: newCart,
+      customer_details: {
+        first_name: user.firstName,
+        last_name: user.lastName,
+        email: user.primaryEmailAddress.emailAddress,
+        phone: user.primaryPhoneNumber,
+        billing_address: {
+          first_name: user.firstName,
+          last_name: user.lastName,
+          email: user.primaryEmailAddress.emailAddress,
+          phone: user.primaryPhoneNumber,
+          address: "",
+          city: "",
+          postal_code: "",
+          country_code: "IDN",
+        },
+        shipping_address: {
+          first_name: user.firstName,
+          last_name: user.lastName,
+          email: user.primaryEmailAddress.emailAddress,
+          phone: user.primaryPhoneNumber,
+          address: "",
+          city: "",
+          postal_code: "",
+          country_code: "",
+        },
+      },
+    });
     const token = await snap.createTransactionToken(data);
+    const orderItem = cart.map((item) => {
+      return {
+        orderid: order.id,
+        productid: item.productId,
+        quantity: item.quantity,
+        price: item.price,
+      };
+    });
+
+    await Promise.all([
+      prisma.orderItem.createMany({
+        data: orderItem,
+      }),
+      prisma.cartItem.updateMany({
+        where: {
+          userId: user.id,
+          status: "mark",
+        },
+        data: {
+          status: "unmark",
+        },
+      }),
+    ]);
+
     return NextResponse.json({ token });
   } catch (error) {
+    console.log({ error });
     return NextResponse.json({
       error: JSON.stringify(error),
     });

@@ -23,7 +23,7 @@ export default async function MenuCategory() {
           {categories.map((category: Category) => (
             <Link
               key={category.id}
-              href={`/products?category=${category.id}`}
+              href={`/products?category=${category.slug}`}
               className="text-center hover:text-primary/40 hover:translate-y-1 hover:translate-x-1 ease-in-out transition-all"
             >
               {category.title}
