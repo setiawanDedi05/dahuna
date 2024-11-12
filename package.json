@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate && prisma migrate deploy",
+    "seed": "ts-node prisma/seed.ts",
     "test": "cross-env NODE_ENV=test jest",
     "cypress:open": "cross-env NODE_ENV=test cypress open",
     "cypress:start": "start-server-and-test 'npm run start:test' 3000 'npm run cypress:open'"
