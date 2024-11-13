@@ -5,7 +5,7 @@ export const GET = async (req: NextRequest) => {
   const orderId = req.nextUrl.searchParams.get("order_id");
   const transactionStatus = req.nextUrl.searchParams.get("transaction_status");
 
-  const order = await prisma.order.update({
+  await prisma.order.update({
     where: {
       id: orderId!,
     },
@@ -13,6 +13,6 @@ export const GET = async (req: NextRequest) => {
       orderStatus: transactionStatus!,
     },
   });
-
-  return NextResponse.redirect("/");
+  
+  return NextResponse.redirect(`${process.env.NEXT_PUBLIC_URL}`);
 };
