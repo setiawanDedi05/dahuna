@@ -16,7 +16,7 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
           },
         }}
         afterSignOutUrl="/sign-in"
-        afterSignInUrl="/"
+        dynamic
       >
         <TooltipProvider>{children}</TooltipProvider>
       </ClerkProvider>

@@ -3,6 +3,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
   const userId = req.nextUrl.searchParams.get("userId");
+  
+  if (!userId) return;
+
   const data = await prisma.cartItem.count({
     where: {
       userId: userId!,
