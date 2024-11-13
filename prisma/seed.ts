@@ -1,7 +1,15 @@
-import { ProductImages } from "@/@types";
-import { Prisma, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 async function main() {
+  await prisma.user.create({
+    data: {
+      email: "dssetiawan",
+      firstName: "Dedi",
+      lastName: "Setiawan",
+      img: "",
+    },
+  });
+
   const categories = await Promise.all([
     prisma.category.upsert({
       where: { slug: "woman-cloth" },
@@ -11,6 +19,7 @@ async function main() {
         slug: "woman-cloth",
         image: "/assets/images/woman-1.jpg",
       },
+      
     }),
     prisma.category.upsert({
       where: { slug: "man-cloth" },
@@ -218,8 +227,6 @@ async function main() {
       },
     }),
   ]);
-
-  console.log({ productImages });
 }
 main()
   .then(async () => {
