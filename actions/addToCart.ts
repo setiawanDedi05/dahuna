@@ -10,23 +10,22 @@ export async function addToCart(
 ) {
   await prisma.cartItem.upsert({
     create: {
-      quantity: quantity ?? 1,
+      quantity: quantity!,
       price: product.priceDisplay,
       productId: product.id,
       userId: userId!,
     },
     update: {
       quantity: {
-        increment: quantity ?? 1,
+        increment: quantity!,
       },
       price: product.priceDisplay,
       productId: product.id,
       userId: userId!,
     },
     where: {
-      productId_userId_status: {
+      productId_userId: {
         productId: product.id,
-        status: "mark",
         userId: userId,
       },
     },

@@ -22,7 +22,7 @@ export const ProductCard = ({ item }: { item: Product }) => {
             variant="outline"
             size="icon"
             onClick={() => {
-              addToCart(item, userId!);
+              addToCart(item, userId!,1);
               refresh();
             }}
           >

@@ -101,13 +101,9 @@ export const POST = async (req: Request) => {
       prisma.orderItem.createMany({
         data: orderItem,
       }),
-      prisma.cartItem.updateMany({
+      prisma.cartItem.deleteMany({
         where: {
           userId: user.id,
-          status: "mark",
-        },
-        data: {
-          status: "unmark",
         },
       }),
     ]);
