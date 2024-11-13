@@ -25,12 +25,8 @@ export function Checkout({ show, setShow }: CheckoutProps) {
     fetcher
   );
 
-  if (error) {
-    return <>Error</>;
-  }
-
-  if (isLoading) {
-    return <Loader2 className="animate-spin" />;
+  if (error || isLoading) {
+    return <></>;
   }
 
   return <CartComponent data={data!} setShow={setShow} show={show} />;

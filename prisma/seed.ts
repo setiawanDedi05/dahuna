@@ -1,15 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 async function main() {
-  await prisma.user.create({
-    data: {
-      email: "dssetiawan",
-      firstName: "Dedi",
-      lastName: "Setiawan",
-      img: "",
-    },
-  });
-
   const categories = await Promise.all([
     prisma.category.upsert({
       where: { slug: "woman-cloth" },

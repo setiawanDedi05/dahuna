@@ -37,7 +37,7 @@ export const ProductCard = ({ item }: { item: Product }) => {
           className="duration-300 ease-linear !h-[400px] !w-[300px] object-cover"
         />
       </div>
-      <Link href={`/products/${item.id}`}>
+      <Link href={`/products/${item.slug}`}>
         <h2 className="text-left truncate text-xl font-bold leading-10">
           {item.name}
         </h2>
