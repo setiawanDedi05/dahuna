@@ -19,6 +19,7 @@ export type Product = {
   id: string;
   createdAt: Date;
   updatedAt: Date;
+  slug: string;
   name: string;
   description: string | null;
   priceReal: number;
