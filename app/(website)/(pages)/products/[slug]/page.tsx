@@ -2,10 +2,10 @@ import { ProductDetailImage } from "@/components/modules/product/ProductDetail.i
 import { ProductDetailDescription } from "@/components/modules/product/ProductDetailDescription";
 import prisma from "@/lib/db";
 
-async function pages({ params }: { params: { id: string } }) {
+async function pages({ params }: { params: { slug: string } }) {
   const product = await prisma.product.findUnique({
     where: {
-      id: params.id,
+      slug: params.slug,
     },
     include: {
       Images: true,
