@@ -2,6 +2,7 @@
 
 import { Product } from "@/@types";
 import prisma from "@/lib/db";
+import { revalidatePath } from "next/cache";
 
 export async function addToCart(
   product: Product,
@@ -30,4 +31,6 @@ export async function addToCart(
       },
     },
   });
+
+  revalidatePath("/products");
 }
