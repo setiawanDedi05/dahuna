@@ -19,19 +19,8 @@ export default function CartBadge() {
     fetcher
   );
 
-  if (!userId) {
+  if (!userId || error) {
     return <></>;
-  }
-
-  if (error) {
-    return (
-      <Badge
-        variant="destructive"
-        className="text-white rounded-full border-0 absolute -right-4 -top-1"
-      >
-        ?
-      </Badge>
-    );
   }
 
   if (isLoading) {
