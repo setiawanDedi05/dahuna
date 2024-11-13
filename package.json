@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate && prisma migrate deploy",
+    "postinstall": "prisma generate && prisma migrate deploy && ts-node prisma/seed.ts",
     "seed": "ts-node prisma/seed.ts",
     "test": "cross-env NODE_ENV=test jest",
     "cypress:open": "cross-env NODE_ENV=test cypress open",
