@@ -10,7 +10,6 @@ async function main() {
         slug: "woman-cloth",
         image: "/assets/images/woman-1.jpg",
       },
-      
     }),
     prisma.category.upsert({
       where: { slug: "man-cloth" },
@@ -110,6 +109,7 @@ async function main() {
         categoryId: categories[0].id,
         priceDisplay: 400000,
         priceReal: 450000,
+        weight: "1",
       },
     }),
     prisma.product.upsert({
@@ -123,6 +123,7 @@ async function main() {
         categoryId: categories[1].id,
         priceDisplay: 350000,
         priceReal: 400000,
+        weight: "1",
       },
     }),
     prisma.product.upsert({
@@ -136,6 +137,7 @@ async function main() {
         categoryId: categories[2].id,
         priceDisplay: 300000,
         priceReal: 350000,
+        weight: "1",
       },
     }),
     prisma.product.upsert({
@@ -149,6 +151,7 @@ async function main() {
         categoryId: categories[3].id,
         priceDisplay: 500000,
         priceReal: 550000,
+        weight: "1",
       },
     }),
     prisma.product.upsert({
@@ -162,11 +165,12 @@ async function main() {
         categoryId: categories[3].id,
         priceDisplay: 100000,
         priceReal: 150000,
+        weight: "1",
       },
     }),
   ]);
 
-  const productImages = await Promise.all([
+  await Promise.all([
     prisma.productImage.upsert({
       where: { url: "/assets/images/image-1.jpg" },
       update: {
