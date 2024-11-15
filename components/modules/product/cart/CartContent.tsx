@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useUser } from "@clerk/nextjs";
 import axios from "axios";
-import { Box } from "lucide-react";
+import { Box, Loader } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { ProductListItem } from "./CartProductItem";
 import { Total } from "./CartTotal";
@@ -13,6 +13,8 @@ import { incrementItemCart } from "@/actions/incrementItemCart";
 import { decrementItemCart } from "@/actions/decrementItemCart";
 import { deleteItemCart } from "@/actions/deleteItemCart";
 import { useRouter } from "next/navigation";
+import { saveCart } from "@/actions/saveCart";
+import { toast } from "sonner";
 
 export const CartContent = ({
   data,
@@ -23,6 +25,7 @@ export const CartContent = ({
 }) => {
   const { user } = useUser();
   const [carts, setCarts] = useState<Cart[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const { refresh } = useRouter();
   useEffect(() => {
     setCarts(data);
@@ -115,9 +118,19 @@ export const CartContent = ({
       <div className="flex flex-col gap-2">
         <Button
           className="w-full h-16 rounded-none text-lg font-bold"
-          onClick={handleCheckout}
+          onClick={async () => {
+            try {
+              setLoading(true);
+              await saveCart(carts, user?.id!);
+            } catch (error) {
+              toast.error("Error Hubungi Customer Service");
+            } finally {
+              setLoading(false);
+              setShow(false);
+            }
+          }}
         >
-          Checkout
+          {loading ? <Loader className="animation-spin" /> : "Checkout"}
         </Button>
       </div>
     </>

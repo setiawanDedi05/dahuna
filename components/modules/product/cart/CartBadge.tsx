@@ -4,18 +4,18 @@ import { Loader2 } from "lucide-react";
 import React from "react";
 import useSWR, { Fetcher } from "swr";
 
+const fetcher: Fetcher<number, string> = (args) =>
+  fetch(args)
+    .then((res) => res.json())
+    .then((res) => {
+      return res.content;
+    });
+
 export default function CartBadge() {
   const { userId } = useAuth();
 
-  const fetcher: Fetcher<number, string> = (args) =>
-    fetch(args)
-      .then((res) => res.json())
-      .then((res) => {
-        return res.content;
-      });
-
   const { data, error, isLoading } = useSWR<number>(
-    process.env.NEXT_PUBLIC_URL + "/api/cart/total?userId=" + userId,
+    userId && process.env.NEXT_PUBLIC_URL + "/api/cart/total?userId=" + userId,
     fetcher
   );
 

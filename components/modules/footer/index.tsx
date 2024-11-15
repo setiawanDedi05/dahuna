@@ -52,7 +52,7 @@ export const Footer = () => {
               </Link>
             </li>
             <li className="flex gap-4 text-slate-300 hover:text-white">
-              <Link href="/account">My Cart</Link>
+              <Link href="/checkout">Checkout</Link>
             </li>
           </ul>
           <ul className="flex flex-col gap-4 md:mx-auto">

@@ -1,6 +1,9 @@
+"use client";
+
 import React from "react";
 import { ClerkProvider } from "@clerk/nextjs";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -19,6 +22,13 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
         dynamic
       >
         <TooltipProvider>{children}</TooltipProvider>
+        <ProgressBar
+          height="10px"
+          color="#000"
+          options={{ showSpinner: true }}
+          shallowRouting
+          disableAnchorClick
+        />
       </ClerkProvider>
     </div>
   );

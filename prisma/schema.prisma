@@ -109,10 +109,10 @@ model Order {
   Address        Address  @relation(fields: [addressId], references: [id])
   addressId      String
 
-  Voucher        Voucher? @relation(fields: [voucherId], references: [id])
-  voucherId      String?
-  expedition     String
-  expreditionFee Float
+  Voucher       Voucher? @relation(fields: [voucherId], references: [id])
+  voucherId     String?
+  expedition    String
+  expeditionFee Float
 
   OrderItem OrderItem[]
 }

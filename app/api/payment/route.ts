@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import Midtrans from "midtrans-client";
 import { Cart } from "@/@types";
 import prisma from "@/lib/db";
+import { User } from "@clerk/nextjs/server";
+import { randomUUID } from "crypto";
 
 let snap = new Midtrans.Snap({
   isProduction: false,
@@ -13,25 +15,30 @@ export const POST = async (req: Request) => {
   const {
     cart,
     user,
+    totalAmount,
+    addressId,
+    expedition,
+    expeditionFee,
+    voucherId,
   }: {
     cart: Cart[];
-    user: {
-      id: string;
-      fullName: string;
-      firstName: string;
-      lastName: string;
-      primaryEmailAddress: {
-        emailAddress: string;
-      };
-      primaryPhoneNumber: string;
-    };
+    user: User;
+    totalAmount: number;
+    addressId: string;
+    expedition: string;
+    expeditionFee: number;
+    voucherId: string;
   } = await req.json();
 
-  const totalAmount = cart.reduce(
-    (accumulator, currenValue) =>
-      accumulator + currenValue.price * currenValue.quantity,
-    0
-  );
+  console.log({
+    cart,
+    user,
+    totalAmount,
+    addressId,
+    expedition,
+    expeditionFee,
+    voucherId,
+  });
 
   const newCart = cart.map((item) => {
     return {
@@ -42,12 +49,37 @@ export const POST = async (req: Request) => {
     };
   });
 
+  newCart.push({
+    id: randomUUID(),
+    price: expeditionFee,
+    quantity: 1,
+    name: expedition,
+  });
+
+  newCart.push({
+    id: randomUUID(),
+    price: 1000,
+    quantity: 1,
+    name: "serviceFee",
+  });
+
+  newCart.push({
+    id: randomUUID(),
+    price: -100000,
+    quantity: 1,
+    name: "discount",
+  });
+
   try {
     const order = await prisma.order.create({
       data: {
         userId: user.id,
         orderStatus: "unpaid",
         totalAmount,
+        addressId,
+        expedition,
+        expeditionFee,
+        voucherId,
       },
     });
 
@@ -63,12 +95,12 @@ export const POST = async (req: Request) => {
       customer_details: {
         first_name: user.firstName,
         last_name: user.lastName,
-        email: user.primaryEmailAddress.emailAddress,
+        email: user.primaryEmailAddress?.emailAddress,
         phone: user.primaryPhoneNumber,
         billing_address: {
           first_name: user.firstName,
           last_name: user.lastName,
-          email: user.primaryEmailAddress.emailAddress,
+          email: user.primaryEmailAddress?.emailAddress,
           phone: user.primaryPhoneNumber,
           address: "",
           city: "",
@@ -78,7 +110,7 @@ export const POST = async (req: Request) => {
         shipping_address: {
           first_name: user.firstName,
           last_name: user.lastName,
-          email: user.primaryEmailAddress.emailAddress,
+          email: user.primaryEmailAddress?.emailAddress,
           phone: user.primaryPhoneNumber,
           address: "",
           city: "",
@@ -107,12 +139,12 @@ export const POST = async (req: Request) => {
         },
       }),
     ]);
-
+    console.log({ token });
     return NextResponse.json({ token });
   } catch (error) {
     console.log({ error });
     return NextResponse.json({
-      error: JSON.stringify(error),
+      error,
     });
   }
 };

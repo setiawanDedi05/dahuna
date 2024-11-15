@@ -4,6 +4,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { TabsContent } from "@/components/ui/tabs";
 import { Loader } from "lucide-react";
 import React from "react";
+import { toast } from "sonner";
 import useSWR, { Fetcher } from "swr";
 
 const fetcher: Fetcher<Provinsi[], string> = (args) =>
@@ -26,7 +27,9 @@ export default function ProvinsiComponent({
   );
 
   if (error) {
-    return <>{error.toString()}</>;
+    return toast.info(
+      "Gagal dalam mengambil data, Terjadi Kesalahan Tunggu beberapa saat lagi"
+    );
   }
 
   if (isLoading) {

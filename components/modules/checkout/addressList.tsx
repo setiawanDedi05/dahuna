@@ -37,7 +37,7 @@ export default function AddressList() {
   return (
     <div className="flex flex-col my-5">
       {data!.map((address) => (
-        <div className="border border-dashed p-5 flex flex-col">
+        <div key={address.id} className="border border-dashed p-5 flex flex-col">
           <span className="font-bold">{address.name}</span>
           <span className="text-muted-foreground">{address.noTelp}</span>
           <p>{`${address.detail}, ${address.kelurahan}, ${address.kecamatan}, ${address.kota}, ${address.provinsi}, ${address.kodePos}`}</p>
