@@ -28,6 +28,7 @@ export const ProductDetailDescription = ({
       productId: product!.id,
       userId: user!.id,
       quantity: qty,
+      checked: true,
       price: product!.priceDisplay,
       createdAt: Date.now().toString(),
       updatedAt: Date.now().toString(),
