@@ -4,7 +4,8 @@ import React from "react";
 import { ClerkProvider } from "@clerk/nextjs";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
-
+import { Provider as ReduxProvider } from "react-redux";
+import { store } from "@/redux/store";
 const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
     <div>
@@ -21,11 +22,13 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
         afterSignOutUrl="/sign-in"
         dynamic
       >
-        <TooltipProvider>{children}</TooltipProvider>
+        <TooltipProvider>
+          <ReduxProvider store={store}>{children}</ReduxProvider>
+        </TooltipProvider>
         <ProgressBar
-          height="10px"
+          height="5px"
           color="#000"
-          options={{ showSpinner: true }}
+          options={{ showSpinner: false }}
           shallowRouting
           disableAnchorClick
         />

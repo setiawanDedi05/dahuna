@@ -5,7 +5,6 @@ import { ProductContent } from "./ProductContent";
 import { ProductTopBar } from "./ProductTopBar";
 import { ProductCard } from "./ProductCard";
 import { LoaderProducts } from "./LoaderProducts";
-import { Checkout } from "./Checkout";
 
 export {
   ProductBreadCrumb,
@@ -15,5 +14,4 @@ export {
   ProductContent,
   ProductCard,
   LoaderProducts,
-  Checkout,
 };

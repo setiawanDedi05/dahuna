@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { ChevronRight, Truck, X } from "lucide-react";
 import React, { useState } from "react";
 import ExpeditionListComponent from "./expeditionList";
-import { Address, CostExpedition } from "@/@types";
 import {
   Drawer,
   DrawerClose,
@@ -14,24 +13,22 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { toCurrency } from "@/components/custom/Currency";
+import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
 
-export default function ExpeditionComponent({
-  data,
-  expedition,
-  setExpedition,
-}: {
-  data: Address | undefined;
-  expedition: CostExpedition | undefined;
-  setExpedition: (value: CostExpedition) => void;
-}) {
+export default function ExpeditionComponent() {
   const [open, setOpen] = useState<boolean>(false);
+  const { addresses, expedition } = useSelector(
+    (state: RootState) => state.order
+  );
+
   return (
     <div className="w-4/5 border-t-4 bg-primary-foreground rounded-md shadow-md px-5 py-3">
       <div className="flex items-center gap-x-3">
         <Truck size={32} /> <span className="font-bold">Expedition</span>
       </div>
       <div className="grid lg:grid-cols-3 gap-5 mt-5">
-        <Drawer open={open}>
+        <Drawer open={open} onRelease={() => setOpen(false)}>
           <DrawerTrigger asChild onClick={() => setOpen(true)}>
             <Button
               variant="outline"
@@ -47,14 +44,7 @@ export default function ExpeditionComponent({
                 {!expedition ? "Pilih Expedisi" : "Ubah Expedisi"}
               </DrawerTitle>
               <DrawerDescription>
-                {data && (
-                  <ExpeditionListComponent
-                    data={data}
-                    setExpedition={setExpedition}
-                    expedition={expedition}
-                    setOpen={setOpen}
-                  />
-                )}
+                {addresses[0] && <ExpeditionListComponent setOpen={setOpen} />}
               </DrawerDescription>
               <DrawerFooter>
                 <DrawerClose>

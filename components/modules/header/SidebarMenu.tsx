@@ -10,7 +10,7 @@ import { MenuIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 
 export const SidebarMenu = () => {
   const pathname = usePathname();

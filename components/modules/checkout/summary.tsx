@@ -1,34 +1,25 @@
-import { Address, Cart } from "@/@types";
 import { toCurrency } from "@/components/custom/Currency";
 import { Button } from "@/components/ui/button";
-import { User } from "@clerk/nextjs/server";
-import { Voucher } from "@prisma/client";
+import { RootState } from "@/redux/store";
+import { useUser } from "@clerk/nextjs";
 import axios from "axios";
 import { Paperclip } from "lucide-react";
 import React from "react";
+import { useSelector } from "react-redux";
 import { toast } from "sonner";
 
-export default function SummaryComponent({
-  totalAmountProduct,
-  expeditionFee,
-  serviceFee,
-  disabledOrder,
-  voucher,
-  carts,
-  user,
-  address,
-}: {
-  totalAmountProduct: number;
-  address: Address | undefined;
-  expeditionFee: number;
-  serviceFee: number;
-  voucher: Voucher | undefined;
-  disabledOrder: boolean;
-  carts: Cart[];
-  user?: User;
-}) {
+export default function SummaryComponent() {
+  const { user } = useUser();
+  const { addresses, voucher, serviceFee, expedition } = useSelector(
+    (state: RootState) => state.order
+  );
+  const { value, totalAmount } = useSelector((state: RootState) => state.carts);
+
   const total =
-    totalAmountProduct + expeditionFee + serviceFee - (voucher?.amount ?? 0);
+    totalAmount +
+    Number(expedition?.price || 0) +
+    serviceFee -
+    (voucher?.amount ?? 0);
 
   const handleCheckout = async () => {
     try {
@@ -36,13 +27,13 @@ export default function SummaryComponent({
         method: "POST",
         url: "/api/payment",
         data: {
-          cart: carts,
+          cart: value.filter(item => item.checked),
           user,
           totalAmount: total,
-          addressId: address?.id as string,
+          addressId: addresses[0]?.id as string,
           expedition: "jne",
-          expeditionFee: expeditionFee,
-          voucherId: voucher?.id as string,
+          expeditionFee: expedition?.price,
+          voucher: voucher,
         },
       });
       window.snap.pay(response.data.token);
@@ -60,11 +51,11 @@ export default function SummaryComponent({
       <div className="flex flex-col justify-between items-end gap-y-5">
         <div className="flex w-[300px] justify-between">
           <span>Subtotal Product</span>
-          <span>{toCurrency({ amount: totalAmountProduct as number })}</span>
+          <span>{toCurrency({ amount: totalAmount as number })}</span>
         </div>
         <div className="flex w-[300px] justify-between">
           <span>Subtotal Pengiriman</span>
-          <span>{toCurrency({ amount: expeditionFee })}</span>
+          <span>{toCurrency({ amount: expedition?.price || 0 })}</span>
         </div>
         <div className="flex w-[300px] justify-between">
           <span>Biaya Layanan</span>
@@ -83,7 +74,7 @@ export default function SummaryComponent({
           </span>
         </div>
         <Button
-          disabled={disabledOrder}
+          disabled={!Boolean(addresses.length) || !Boolean(expedition) || !Boolean(value.length)  }
           className="w-[300px] font-bold"
           onClick={handleCheckout}
         >

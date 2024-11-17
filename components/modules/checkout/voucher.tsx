@@ -5,27 +5,27 @@ import { toCurrency } from "@/components/custom/Currency";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { setVoucher } from "@/redux/reducer/orderSlice";
+import { RootState } from "@/redux/store";
 import { Voucher } from "@prisma/client";
 import { Loader, TicketMinus } from "lucide-react";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 
-export default function VoucherComponent({
-  setVoucher,
-  voucher,
-}: {
-  setVoucher: (value: Voucher | undefined) => void;
-  voucher?: Voucher;
-}) {
+export default function VoucherComponent() {
+  const dispatch = useDispatch();
   const [code, setCode] = useState<string>();
   const [loading, setLoading] = useState<boolean>(false);
+  const { voucher } = useSelector((state: RootState) => state.order);
+
   const onClickHandler = async () => {
     try {
       setLoading(true);
       const result = (await checkVoucher(code as string)) as Voucher | null;
       if (result) {
         toast.success("Voucher berhasil di gunakan");
-        setVoucher!(result);
+        dispatch(setVoucher(result));
         return;
       }
       toast.error("voucher tidak di temukan");
@@ -35,6 +35,7 @@ export default function VoucherComponent({
       setLoading(false);
     }
   };
+
   return (
     <div className="w-4/5 border-t-4 bg-primary-foreground rounded-md shadow-md px-5 py-3">
       <div className="flex items-center gap-x-3">

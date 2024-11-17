@@ -34,16 +34,17 @@ export type MidtransCheckoutSnapRequest = {
 };
 
 export type Cart = {
-  id: string;
+  id?: string;
   quantity: number;
   price: number;
   productId: string;
   userId: string;
   status?: string;
-  createdAt: string | Date;
-  updatedAt: string | Date;
+  checked: boolean;
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
 
-  Product: Product;
+  Product?: Product;
 };
 
 export type ProductImages = {

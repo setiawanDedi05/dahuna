@@ -1,4 +1,3 @@
-import { Cart } from "@/@types";
 import { toCurrency } from "@/components/custom/Currency";
 import {
   Table,
@@ -8,17 +7,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { RootState } from "@/redux/store";
 import { BoxIcon } from "lucide-react";
 import Image from "next/image";
 import React from "react";
+import { useSelector } from "react-redux";
 
-export default function ProductListComponent({
-  carts,
-  totalAmount,
-}: {
-  carts: Cart[];
-  totalAmount: number | undefined;
-}) {
+export default function ProductListComponent() {
+  const { value, totalAmount } = useSelector((state: RootState) => state.carts);
+
   return (
     <div className="w-4/5 border-t-4 bg-primary-foreground rounded-md shadow-md px-5 py-3">
       <div className="flex items-baseline gap-x-3">
@@ -34,26 +31,31 @@ export default function ProductListComponent({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {carts?.map((cart) => (
-            <TableRow key={cart.id}>
-              <TableCell className="font-medium">
-                <div className="flex gap-2 items-center">
-                  <Image
-                    src={cart.Product.Images[0].url}
-                    width={100}
-                    height={50}
-                    alt={cart.Product.name}
-                  />
-                  <span className="truncate">{cart.Product.name}</span>
-                </div>
-              </TableCell>
-              <TableCell>{toCurrency({ amount: cart.price })}</TableCell>
-              <TableCell>{cart.quantity}</TableCell>
-              <TableCell className="text-right">
-                {toCurrency({ amount: cart.price })}
-              </TableCell>
-            </TableRow>
-          ))}
+          {value
+            .filter((item) => item.checked)
+            ?.map((cart) => (
+              <TableRow key={cart.id}>
+                <TableCell className="font-medium">
+                  <div className="flex gap-2 items-center">
+                    <Image
+                      src={
+                        cart?.Product?.Images[0].url ||
+                        "/assets/images/default-image.jpg"
+                      }
+                      width={100}
+                      height={50}
+                      alt={cart?.Product?.name || "Default"}
+                    />
+                    <span className="truncate">{cart?.Product?.name}</span>
+                  </div>
+                </TableCell>
+                <TableCell>{toCurrency({ amount: cart.price })}</TableCell>
+                <TableCell>{cart.quantity}</TableCell>
+                <TableCell className="text-right">
+                  {toCurrency({ amount: cart.price })}
+                </TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
       <div className="border-t-2 flex justify-end gap-10 items-end pt-5">

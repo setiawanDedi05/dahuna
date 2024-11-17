@@ -1,10 +1,12 @@
-import { Address, CostExpedition, Expedition } from "@/@types";
+import { Expedition } from "@/@types";
 import { toCurrency } from "@/components/custom/Currency";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Loader } from "lucide-react";
+import { setExpedition } from "@/redux/reducer/orderSlice";
+import { RootState } from "@/redux/store";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 import useSWR, { Fetcher } from "swr";
 
@@ -16,23 +18,21 @@ const fetcher: Fetcher<Expedition, string> = (args) =>
     });
 
 export default function ExpeditionListComponent({
-  data,
-  expedition,
-  setExpedition,
   setOpen,
 }: {
-  data: Address;
-  expedition: CostExpedition | undefined;
-  setExpedition: (value: CostExpedition) => void;
   setOpen: (value: boolean) => void;
 }) {
+  const dispatch = useDispatch()
+  const { addresses, expedition } = useSelector(
+    (state: RootState) => state.order
+  );
   const {
     data: expeditions,
     error,
     isLoading,
   } = useSWR<Expedition>(
-    data
-      ? `${process.env.NEXT_PUBLIC_URL}/api/expeditions?destination=${data.kota
+    addresses
+      ? `${process.env.NEXT_PUBLIC_URL}/api/expeditions?destination=${addresses[0].kota
           .split(".")[1]
           .toLowerCase()
           .trim()}&weight=${1}`
@@ -68,7 +68,7 @@ export default function ExpeditionListComponent({
             className="h-[80px] my-3 px-5 w-full flex items-starts justify-start shadow-md rounded-md"
             onClick={() => {
               setOpen(false);
-              setExpedition(item);
+              dispatch(setExpedition(item));
             }}
           >
             <span className="text-xl font-bold">{item.name}</span>

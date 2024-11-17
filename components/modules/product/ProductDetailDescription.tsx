@@ -8,6 +8,8 @@ import { useUser } from "@clerk/nextjs";
 import axios from "axios";
 import { MinusCircle, PlusCircle } from "lucide-react";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addItem } from "../../../redux/reducer/cartSlice";
 
 type ProductDetailImageProps = {
   product: Product | null;
@@ -16,9 +18,9 @@ type ProductDetailImageProps = {
 export const ProductDetailDescription = ({
   product,
 }: ProductDetailImageProps) => {
+  const dispatch = useDispatch();
   const { user } = useUser();
   const [qty, setQty] = useState<number>(1);
-
   const handleCheckout = async () => {
     const cart: Cart = {
       id: "",
@@ -98,8 +100,11 @@ export const ProductDetailDescription = ({
         <Button
           variant="outline"
           className="h-14 lg:w-52 uppercase font-bold"
-          onClick={() => {
-            addToCart(product!, user?.id!, qty);
+          onClick={async () => {
+            dispatch(
+              addItem({ product: product!, userId: user?.id!, quantity: qty })
+            );
+            await addToCart(product!, user?.id!, qty);
           }}
         >
           Save to Cart

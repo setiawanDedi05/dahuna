@@ -1,9 +1,9 @@
 import { Kecamatan, Kelurahan } from "@/@types";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { TabsContent } from "@/components/ui/tabs";
-import { Loader } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import React from "react";
+import { toast } from "sonner";
 import useSWR, { Fetcher } from "swr";
 
 const fetcher: Fetcher<Kelurahan[], string> = (args) =>
@@ -28,27 +28,31 @@ export default function KelurahanComponent({
   );
 
   if (error) {
-    return <>{error.toString()}</>;
+    return toast.info(
+      "Gagal dalam mengambil data, Terjadi Kesalahan Tunggu beberapa saat lagi"
+    );
   }
 
   if (isLoading) {
-    return <Loader className="animate-spin" />;
+    return (
+      <div className="h-[400px] w-full flex justify-center items-center">
+        <Loader2 className="animate-spin" />
+      </div>
+    );
   }
 
   return (
-    <TabsContent value="kelurahan">
-      <ScrollArea className="flex flex-col h-[400px]">
-        {data?.map((item) => (
-          <Button
-            variant={kelurahan?.id === item.id ? "default" : "outline"}
-            key={item.id}
-            className="block w-full text-start my-2"
-            onClick={() => setKelurahan!(item)}
-          >
-            {item.name}
-          </Button>
-        ))}
-      </ScrollArea>
-    </TabsContent>
+    <ScrollArea className="flex flex-col h-[400px]">
+      {data?.map((item) => (
+        <Button
+          variant={kelurahan?.id === item.id ? "default" : "outline"}
+          key={item.id}
+          className="block w-full text-start my-2"
+          onClick={() => setKelurahan!(item)}
+        >
+          {item.name}
+        </Button>
+      ))}
+    </ScrollArea>
   );
 }

@@ -6,16 +6,16 @@ import {
   SheetDescription,
   SheetTitle,
   SheetTrigger,
-} from "../ui/sheet";
+} from "../../ui/sheet";
 import { ListFilter } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import { Button } from "../ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../../ui/tooltip";
+import { Button } from "../../ui/button";
 import {
   ProductCategory,
   ProductFiltersByPrice,
   ProductHeadingSideBar,
-} from "../modules/product/ProductSideBar";
+} from "../product/ProductSideBar";
 import { Category } from "@/@types";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 

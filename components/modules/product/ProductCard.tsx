@@ -5,15 +5,17 @@ import { Button } from "@/components/ui/button";
 import { Product } from "@/@types";
 import { ShoppingCartIcon } from "lucide-react";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { addToCart } from "@/actions/addToCart";
 import { useAuth } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { useDispatch } from "react-redux";
+import { addItem, changeStatus } from "../../../redux/reducer/cartSlice";
 
 export const ProductCard = ({ item }: { item: Product }) => {
   const { userId } = useAuth();
-  const { refresh } = useRouter();
+  const dispatch = useDispatch();
   return (
     <div className="p-3 w-full h-full border flex flex-col justify-start gap-1">
       <div className="flex group/image h-[400px] relative overflow-hidden">
@@ -21,9 +23,19 @@ export const ProductCard = ({ item }: { item: Product }) => {
           <Button
             variant="outline"
             size="icon"
-            onClick={() => {
-              addToCart(item, userId!,1);
-              refresh();
+            onClick={async () => {
+              dispatch(
+                addItem({ product: item, userId: userId!, quantity: 1 })
+              );
+              try {
+                dispatch(changeStatus("loading"));
+                await addToCart(item, userId!, 1);
+              } catch (error) {
+                dispatch(changeStatus("failed"));
+                toast.error("Terjadi Kesalahan Silahkan Hubungi Admin");
+              } finally {
+                dispatch(changeStatus("idle"));
+              }
             }}
           >
             <ShoppingCartIcon className="size-11" />
@@ -32,9 +44,10 @@ export const ProductCard = ({ item }: { item: Product }) => {
         <Image
           src={item.Images[0]?.url ?? "/assets/images/default-image.jpg"}
           alt={item.name}
-          width="300"
-          height="400"
-          className="duration-300 ease-linear !h-[400px] !w-[300px] object-cover"
+          width={300}
+          height={400}
+          priority
+          className="duration-300 ease-linear !w-auto !h-auto object-cover"
         />
       </div>
       <Link href={`/products/${item.slug}`}>

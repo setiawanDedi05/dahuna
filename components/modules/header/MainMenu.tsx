@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import React from "react";
-import MenuCategory from "../modules/header/MenuCategory";
+import MenuCategory from "./MenuCategory";
 
 export const MainMenu = () => {
   return (
