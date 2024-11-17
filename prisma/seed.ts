@@ -221,6 +221,14 @@ async function main() {
         productId: product[4].id,
       },
     }),
+    prisma.voucher.upsert({
+      where: { code: "DEDI12" },
+      update: {},
+      create: {
+        code: "DEDI12",
+        amount: 10000,
+      },
+    }),
   ]);
 }
 main()

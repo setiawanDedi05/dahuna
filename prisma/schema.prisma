@@ -155,7 +155,7 @@ model Address {
 model Voucher {
   id      String   @id @default(cuid())
   code    String   @unique
-  dueDate DateTime
+  dueDate DateTime?
   amount  Float
 
   Order Order[]
