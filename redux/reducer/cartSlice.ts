@@ -96,8 +96,37 @@ export const cartSlice = createSlice({
       state.value = action.payload;
       state.initialized = true;
     },
-    rollback: (state, action: PayloadAction<Cart>) => {
-      state.value.push(action.payload);
+    rollbackDelete: (
+      state,
+      action: PayloadAction<{ item: Cart; index: number }>
+    ) => {
+      const { item, index } = action.payload;
+      state.value.splice(index, 0, item);
+    },
+    rollbackAdd: (state, action: PayloadAction<string>) => {
+      const findedCart = state.value.findIndex(
+        (it) => it.productId === action.payload
+      );
+      if (findedCart < 0) return;
+      if (state.value[findedCart].quantity === 1){
+        state.value.splice(findedCart, 1);
+        return
+      }
+      state.value[findedCart].quantity -= 1;
+    },
+    rollbackIncrement: (state, action: PayloadAction<Cart>) => {
+      const findedCart = state.value.findIndex(
+        (it) => it.id === action.payload.id
+      );
+      if (findedCart < 0) return;
+      state.value[findedCart].quantity -= 1;
+    },
+    rollbackDecrement: (state, action: PayloadAction<Cart>) => {
+      const findedCart = state.value.findIndex(
+        (it) => it.id === action.payload.id
+      );
+      if (findedCart < 0) return;
+      state.value[findedCart].quantity += 1;
     },
     recalculate: (state) => {
       state.totalAmount = state.value.reduce(
@@ -130,11 +159,14 @@ export const {
   addSomeQuantity,
   deleteItem,
   addItem,
-  rollback,
+  rollbackDelete,
   initCarts,
   toggleCheckItem,
   recalculate,
-  changeStatus
+  changeStatus,
+  rollbackAdd,
+  rollbackDecrement,
+  rollbackIncrement
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

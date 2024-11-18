@@ -8,10 +8,9 @@ const variants = {
 
 type CartProps = {
   show: boolean;
-  setShow: (value: boolean) => void;
 };
 
-export function CartComponent({ show, setShow }: CartProps) {
+export function CartComponent({ show }: CartProps) {
   return (
     <motion.div
       key="chart"

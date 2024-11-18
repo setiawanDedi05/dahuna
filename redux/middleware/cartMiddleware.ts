@@ -7,7 +7,10 @@ import {
   incrementQuantity,
   initCarts,
   recalculate,
-  rollback,
+  rollbackAdd,
+  rollbackDecrement,
+  rollbackDelete,
+  rollbackIncrement,
   toggleCheckItem,
 } from "../reducer/cartSlice";
 
@@ -21,7 +24,10 @@ export const cartMiddleware: Middleware =
       initCarts.type,
       addSomeQuantity.type,
       toggleCheckItem.type,
-      rollback.type,
+      rollbackAdd.type,
+      rollbackDelete.type,
+      rollbackIncrement.type,
+      rollbackDecrement.type,
     ];
     next(action);
     if (actionsToWatch.includes(action.type)) {

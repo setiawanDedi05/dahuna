@@ -17,11 +17,12 @@ export const CartContent = () => {
     status,
   } = useSelector((state: RootState) => state.carts);
   const { push } = useRouter();
+
   return carts?.length ? (
     <>
       <ScrollArea className="h-[400px] w-full">
         {carts?.map((item, index) => (
-          <ProductListItem key={index} cart={item} />
+          <ProductListItem key={index} cart={item} index={index} />
         ))}
       </ScrollArea>
       <Total total={totalItems} totalAmount={totalAmount} />

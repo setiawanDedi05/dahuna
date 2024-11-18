@@ -9,7 +9,9 @@ import {
   decrementQuantity,
   deleteItem,
   incrementQuantity,
-  rollback,
+  rollbackDecrement,
+  rollbackDelete,
+  rollbackIncrement,
   toggleCheckItem,
 } from "../../../../redux/reducer/cartSlice";
 import { deleteItemCart } from "@/actions/deleteItemCart";
@@ -17,12 +19,19 @@ import { decrementItemCart } from "@/actions/decrementItemCart";
 import { incrementItemCart } from "@/actions/incrementItemCart";
 import { Checkbox } from "@/components/ui/checkbox";
 import { changeChecked } from "@/actions/changeChecked";
+import { useAuth } from "@clerk/nextjs";
+import { toast } from "sonner";
+import { message } from "@/constants/message";
 
 type ProductListItemProps = {
   cart: Cart;
+  index: number;
 };
-
-export const ProductListItem = ({ cart }: ProductListItemProps) => {
+/* 
+  @params index digunakan sebagai penanda posisi cart yang dihapus, akan di rollback sesuai posisi awal 
+*/
+export const ProductListItem = ({ cart, index }: ProductListItemProps) => {
+  const { userId } = useAuth();
   const dispatch = useDispatch();
   const handleDelete = async (item: Cart) => {
     dispatch(deleteItem(item.id!));
@@ -30,8 +39,9 @@ export const ProductListItem = ({ cart }: ProductListItemProps) => {
       dispatch(changeStatus("loading"));
       await deleteItemCart(item.id!);
     } catch (error) {
+      toast.error(message.commonStatus500);
       dispatch(changeStatus("failed"));
-      dispatch(rollback(item));
+      dispatch(rollbackDelete({ item, index }));
     } finally {
       dispatch(changeStatus("idle"));
     }
@@ -44,7 +54,8 @@ export const ProductListItem = ({ cart }: ProductListItemProps) => {
       await decrementItemCart(item.id!);
     } catch (error) {
       dispatch(changeStatus("failed"));
-      dispatch(rollback(item));
+      toast.error(message.commonStatus500);
+      dispatch(rollbackDecrement(item));
     } finally {
       dispatch(changeStatus("idle"));
     }
@@ -56,8 +67,9 @@ export const ProductListItem = ({ cart }: ProductListItemProps) => {
       dispatch(changeStatus("loading"));
       await incrementItemCart(item.id!);
     } catch (error) {
+      toast.error(message.commonStatus500);
+      dispatch(rollbackIncrement(item));
       dispatch(changeStatus("failed"));
-      dispatch(rollback(item));
     } finally {
       dispatch(changeStatus("idle"));
     }
@@ -67,10 +79,9 @@ export const ProductListItem = ({ cart }: ProductListItemProps) => {
     dispatch(toggleCheckItem({ id: item.id!, value: value }));
     try {
       dispatch(changeStatus("loading"));
-      await changeChecked(item.id!, value);
+      await changeChecked(item.id!, value, userId!);
     } catch (error) {
       dispatch(changeStatus("failed"));
-      dispatch(rollback(item));
     } finally {
       dispatch(changeStatus("idle"));
     }

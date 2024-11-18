@@ -11,7 +11,7 @@ import { addToCart } from "@/actions/addToCart";
 import { useAuth } from "@clerk/nextjs";
 import { toast } from "sonner";
 import { useDispatch } from "react-redux";
-import { addItem, changeStatus } from "../../../redux/reducer/cartSlice";
+import { addItem, changeStatus, rollbackAdd } from "../../../redux/reducer/cartSlice";
 
 export const ProductCard = ({ item }: { item: Product }) => {
   const { userId } = useAuth();
@@ -33,6 +33,7 @@ export const ProductCard = ({ item }: { item: Product }) => {
               } catch (error) {
                 dispatch(changeStatus("failed"));
                 toast.error("Terjadi Kesalahan Silahkan Hubungi Admin");
+                dispatch(rollbackAdd(item.id));
               } finally {
                 dispatch(changeStatus("idle"));
               }

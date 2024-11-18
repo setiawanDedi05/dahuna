@@ -6,7 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 import useSWR, { Fetcher } from "swr";
 
 const fetcherCart: Fetcher<Cart[], string> = (args) =>
-  fetch(args)
+  fetch(args[0], {
+    next: {
+      tags: [`cart-${args[1]}`],
+    },
+  })
     .then((res) => res.json())
     .then((res) => {
       return res.content;
@@ -18,7 +22,10 @@ export const useCart = () => {
   const { initialized } = useSelector((state: RootState) => state.carts);
 
   const { data, error, isLoading } = useSWR<Cart[]>(
-    userId && process.env.NEXT_PUBLIC_URL + "/api/cart?userId=" + userId,
+    userId && [
+      process.env.NEXT_PUBLIC_URL + "/api/cart?userId=" + userId,
+      userId,
+    ],
     fetcherCart,
     {
       onSuccess: (data) => {

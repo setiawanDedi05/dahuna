@@ -15,7 +15,7 @@ export const IconGroup = () => {
   const { isLoading, error } = useCart();
   const [show, setShow] = useState(false);
   const { isSignedIn } = useUser();
-  
+
   if (error) {
     return toast.info(
       "Gagal dalam mengambil data, Terjadi Kesalahan Tunggu beberapa saat lagi"
@@ -55,12 +55,7 @@ export const IconGroup = () => {
           </Link>
         </Button>
       )}
-      {show && (
-        <CartComponent
-          show={show}
-          setShow={setShow}
-        />
-      )}
+      {show ? <CartComponent show={show} /> : null}
     </section>
   );
 };
