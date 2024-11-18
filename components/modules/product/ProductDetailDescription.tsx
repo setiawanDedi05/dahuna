@@ -1,11 +1,10 @@
 "use client";
 
-import { Cart, Product } from "@/@types";
+import { Product } from "@/@types";
 import { addToCart } from "@/actions/addToCart";
 import { toCurrency } from "@/components/custom/Currency";
 import { Button } from "@/components/ui/button";
-import { useUser } from "@clerk/nextjs";
-import axios from "axios";
+import { useUser } from "@clerk/nextjs"
 import { MinusCircle, PlusCircle } from "lucide-react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -21,32 +20,6 @@ export const ProductDetailDescription = ({
   const dispatch = useDispatch();
   const { user } = useUser();
   const [qty, setQty] = useState<number>(1);
-  const handleCheckout = async () => {
-    const cart: Cart = {
-      id: "",
-      Product: product!,
-      productId: product!.id,
-      userId: user!.id,
-      quantity: qty,
-      checked: true,
-      price: product!.priceDisplay,
-      createdAt: Date.now().toString(),
-      updatedAt: Date.now().toString(),
-    };
-    try {
-      const response = await axios({
-        method: "POST",
-        url: "/api/payment",
-        data: {
-          cart: [cart],
-          user,
-        },
-      });
-      window.snap.pay(response.data.token);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <div className="flex flex-col px-5 h-full">
@@ -105,16 +78,10 @@ export const ProductDetailDescription = ({
             dispatch(
               addItem({ product: product!, userId: user?.id!, quantity: qty })
             );
-            await addToCart(product!, user?.id!, qty);
+            await addToCart(product!, qty);
           }}
         >
-          Save to Cart
-        </Button>
-        <Button
-          className="h-14 lg:w-52 uppercase font-bold"
-          onClick={handleCheckout}
-        >
-          Checkout
+          Tambah Ke keranjang
         </Button>
       </div>
     </div>

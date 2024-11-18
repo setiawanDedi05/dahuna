@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Product } from "@/@types";
 import { ShoppingCartIcon } from "lucide-react";
 import Image from "next/image";
-import React, { useState } from "react";
 import Link from "next/link";
 import { addToCart } from "@/actions/addToCart";
 import { useAuth } from "@clerk/nextjs";
@@ -29,7 +28,8 @@ export const ProductCard = ({ item }: { item: Product }) => {
               );
               try {
                 dispatch(changeStatus("loading"));
-                await addToCart(item, userId!, 1);
+                await addToCart(item, 1);
+                toast.success("berhasil menambahkan produk ke keranjang");
               } catch (error) {
                 dispatch(changeStatus("failed"));
                 toast.error("Terjadi Kesalahan Silahkan Hubungi Admin");

@@ -32,10 +32,10 @@ type ProductListItemProps = {
 export const ProductListItem = ({ cart, index }: ProductListItemProps) => {
   const dispatch = useDispatch();
   const handleDelete = async (item: Cart) => {
-    dispatch(deleteItem(item.id!));
+    dispatch(deleteItem(item.productId!));
     try {
       dispatch(changeStatus("loading"));
-      await deleteItemCart(item.id!);
+      await deleteItemCart(item.productId!);
     } catch (error) {
       toast.error(message.commonStatus500);
       dispatch(changeStatus("failed"));
@@ -46,10 +46,10 @@ export const ProductListItem = ({ cart, index }: ProductListItemProps) => {
   };
 
   const handleDecrease = async (item: Cart) => {
-    dispatch(decrementQuantity(item.id!));
+    dispatch(decrementQuantity(item.productId!));
     try {
       dispatch(changeStatus("loading"));
-      await decrementItemCart(item.id!);
+      await decrementItemCart(item.productId!);
     } catch (error) {
       dispatch(changeStatus("failed"));
       toast.error(message.commonStatus500);
@@ -60,10 +60,10 @@ export const ProductListItem = ({ cart, index }: ProductListItemProps) => {
   };
 
   const handleIncrease = async (item: Cart) => {
-    dispatch(incrementQuantity(item.id!));
+    dispatch(incrementQuantity(item.productId!));
     try {
       dispatch(changeStatus("loading"));
-      await incrementItemCart(item.id!);
+      await incrementItemCart(item.productId!);
     } catch (error) {
       toast.error(message.commonStatus500);
       dispatch(rollbackIncrement(item));
@@ -74,10 +74,10 @@ export const ProductListItem = ({ cart, index }: ProductListItemProps) => {
   };
 
   const handleToggleCheckItem = async (item: Cart, value: boolean) => {
-    dispatch(toggleCheckItem({ id: item.id!, value: value }));
+    dispatch(toggleCheckItem({ productId: item.productId!, value: value }));
     try {
       dispatch(changeStatus("loading"));
-      await changeChecked(item.id!, value);
+      await changeChecked(item.productId!, value);
     } catch (error) {
       dispatch(changeStatus("failed"));
     } finally {

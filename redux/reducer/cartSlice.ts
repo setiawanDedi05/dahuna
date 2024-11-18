@@ -23,24 +23,24 @@ export const cartSlice = createSlice({
   reducers: {
     addSomeQuantity: (
       state,
-      action: PayloadAction<{ id: string; quantity: number }>
+      action: PayloadAction<{ productId: string; quantity: number }>
     ) => {
       const cartIndex = state.value.findIndex(
-        (cart) => cart.id === action.payload.id
+        (cart) => cart.productId === action.payload.productId
       );
       if (cartIndex < 0) return;
       state.value[cartIndex].quantity += action.payload.quantity;
     },
     incrementQuantity: (state, action: PayloadAction<string>) => {
       const cartIndex = state.value.findIndex(
-        (cart) => cart.id === action.payload
+        (cart) => cart.productId === action.payload
       );
       if (cartIndex < 0) return;
       state.value[cartIndex].quantity += 1;
     },
     decrementQuantity: (state, action: PayloadAction<string>) => {
       const cartIndex = state.value.findIndex(
-        (cart) => cart.id === action.payload
+        (cart) => cart.productId === action.payload
       );
       if (cartIndex < 0) return;
       if (state.value[cartIndex].quantity === 1) {
@@ -51,7 +51,7 @@ export const cartSlice = createSlice({
     },
     deleteItem: (state, action: PayloadAction<string>) => {
       const cartIndex = state.value.findIndex(
-        (cart) => cart.id === action.payload
+        (cart) => cart.productId === action.payload
       );
       if (cartIndex < 0) return;
       state.value.splice(cartIndex, 1);
@@ -84,10 +84,10 @@ export const cartSlice = createSlice({
     },
     toggleCheckItem: (
       state,
-      action: PayloadAction<{ id: string; value: boolean }>
+      action: PayloadAction<{ productId: string; value: boolean }>
     ) => {
       const cartIndex = state.value.findIndex(
-        (cart) => cart.id === action.payload.id
+        (cart) => cart.productId === action.payload.productId
       );
       if (cartIndex < 0) return;
       state.value[cartIndex].checked = action.payload.value;
@@ -116,14 +116,14 @@ export const cartSlice = createSlice({
     },
     rollbackIncrement: (state, action: PayloadAction<Cart>) => {
       const findedCart = state.value.findIndex(
-        (it) => it.id === action.payload.id
+        (it) => it.productId === action.payload.productId
       );
       if (findedCart < 0) return;
       state.value[findedCart].quantity -= 1;
     },
     rollbackDecrement: (state, action: PayloadAction<Cart>) => {
       const findedCart = state.value.findIndex(
-        (it) => it.id === action.payload.id
+        (it) => it.productId === action.payload.productId
       );
       if (findedCart < 0) return;
       state.value[findedCart].quantity += 1;
