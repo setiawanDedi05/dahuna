@@ -9,7 +9,11 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useRouter } from "next-nprogress-bar";
 
-export const CartContent = () => {
+export const CartContent = ({
+  setShow,
+}: {
+  setShow: (value: boolean) => void;
+}) => {
   const {
     value: carts,
     totalAmount,
@@ -30,6 +34,7 @@ export const CartContent = () => {
         <Button
           className="w-full h-16 rounded-none text-lg font-bold"
           onClick={() => {
+            setShow(false);
             push("/checkout");
           }}
           disabled={status === "loading"}

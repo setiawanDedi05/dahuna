@@ -36,7 +36,7 @@ export const IconGroup = () => {
       <Button
         variant="outline"
         size="icon"
-        className="hidden relative lg:flex rounded-full size-[1.75rem]"
+        className="relative flex rounded-full size-[1.75rem]"
         onClick={() => setShow(!show)}
       >
         <CartBadge />
@@ -48,14 +48,14 @@ export const IconGroup = () => {
         <Button
           variant="outline"
           size="icon"
-          className="hidden relative lg:flex rounded-full"
+          className="relative flex rounded-full"
         >
           <Link href="/sign-in">
             <User size={24} />
           </Link>
         </Button>
       )}
-      {show ? <CartComponent show={show} /> : null}
+      {show ? <CartComponent show={show} setShow={setShow} /> : null}
     </section>
   );
 };

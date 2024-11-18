@@ -5,7 +5,7 @@ import MenuCategory from "./MenuCategory";
 
 export const MainMenu = () => {
   return (
-    <section className="hidden md:flex z-[9] relative">
+    <section className="hidden lg:flex z-[9] relative">
       <ul className="flex gap-32 justify-between items-center">
         <li className="relative">
           <Link
