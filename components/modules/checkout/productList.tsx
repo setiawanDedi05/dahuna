@@ -17,7 +17,7 @@ export default function ProductListComponent() {
   const { value, totalAmount } = useSelector((state: RootState) => state.carts);
 
   return (
-    <div className="w-4/5 border-t-4 bg-primary-foreground rounded-md shadow-md px-5 py-3">
+    <div className="w-full md:w-4/5 border-t-4 bg-primary-foreground rounded-md shadow-md px-5 py-3">
       <div className="flex items-baseline gap-x-3">
         <BoxIcon size={32} /> <span className="font-bold">Order Products</span>
       </div>

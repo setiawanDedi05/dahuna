@@ -2,11 +2,11 @@
 
 import { Cart } from "@/@types";
 import prisma from "@/lib/db";
-import { useAuth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 export async function saveCart(carts: Cart[]) {
-  const { userId } = useAuth();
+  const { userId } = await auth();
 
   if (!userId) return;
   

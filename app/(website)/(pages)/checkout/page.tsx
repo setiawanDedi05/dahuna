@@ -9,6 +9,8 @@ import VoucherComponent from "@/components/modules/checkout/voucher";
 import { toast } from "sonner";
 import { useAddresses } from "@/hooks/use-address";
 
+export const dynamic = "force-dynamic";
+
 export default function CheckoutPage() {
   const { isLoading, error } = useAddresses();
 

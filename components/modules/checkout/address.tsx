@@ -31,7 +31,7 @@ export default function AddressComponent() {
   const [isSave, setIsSave] = useState<boolean>(false);
 
   return (
-    <div className="w-4/5 border-t-4 border-t-primary bg-primary-foreground rounded-md border-dashed shadow-md px-5 py-3">
+    <div className="w-full md:w-4/5 border-t-4 border-t-primary bg-primary-foreground rounded-md border-dashed shadow-md px-5 py-3">
       <div className="flex items-baseline gap-x-3">
         <MapPin size={32} /> <span className="font-bold">Delivery Address</span>
       </div>

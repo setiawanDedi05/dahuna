@@ -23,7 +23,7 @@ export default function ExpeditionComponent() {
   );
 
   return (
-    <div className="w-4/5 border-t-4 bg-primary-foreground rounded-md shadow-md px-5 py-3">
+    <div className="w-full md:w-4/5 border-t-4 bg-primary-foreground rounded-md shadow-md px-5 py-3">
       <div className="flex items-center gap-x-3">
         <Truck size={32} /> <span className="font-bold">Expedition</span>
       </div>
@@ -61,7 +61,7 @@ export default function ExpeditionComponent() {
           </DrawerContent>
         </Drawer>
         {expedition && (
-          <div className="h-[80px] w-full flex items-start justify-start border-dashed border-2 p-3 border-primary">
+          <div className="h-[80px] lg:h-[150px] w-full flex items-start justify-start border-dashed border-2 p-3 border-primary">
             <div className="flex flex-col items-start">
               <span className="text-xl font-bold">{expedition.name}</span>
               <span className="text-muted-foreground">{expedition.type}</span>

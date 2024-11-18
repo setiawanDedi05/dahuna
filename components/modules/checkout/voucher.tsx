@@ -37,7 +37,7 @@ export default function VoucherComponent() {
   };
 
   return (
-    <div className="w-4/5 border-t-4 bg-primary-foreground rounded-md shadow-md px-5 py-3">
+    <div className="w-full md:w-4/5 border-t-4 bg-primary-foreground rounded-md shadow-md px-5 py-3">
       <div className="flex items-center gap-x-3">
         <TicketMinus size={32} />{" "}
         <span className="font-bold">Do you Have Voucher?</span>

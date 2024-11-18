@@ -1,6 +1,7 @@
+"use client";
+
 import { initAddress, selectAddress } from "@/redux/reducer/orderSlice";
 import { RootState } from "@/redux/store";
-import { useAuth } from "@clerk/nextjs";
 import { Address } from "@prisma/client";
 import { useDispatch, useSelector } from "react-redux";
 import useSWR, { Fetcher } from "swr";
@@ -13,12 +14,11 @@ const fetcherAddresses: Fetcher<Address[], string> = (args) =>
     });
 
 export const useAddresses = () => {
-  const { userId } = useAuth();
   const dispatch = useDispatch();
   const { initialized } = useSelector((state: RootState) => state.order);
 
   const { data, error, isLoading } = useSWR<Address[]>(
-    userId && `${process.env.NEXT_PUBLIC_URL}/api/address?userId=${userId}`,
+    `${process.env.NEXT_PUBLIC_URL}/api/address`,
     fetcherAddresses,
     {
       onSuccess: (data) => {

@@ -19,7 +19,6 @@ import { decrementItemCart } from "@/actions/decrementItemCart";
 import { incrementItemCart } from "@/actions/incrementItemCart";
 import { Checkbox } from "@/components/ui/checkbox";
 import { changeChecked } from "@/actions/changeChecked";
-import { useAuth } from "@clerk/nextjs";
 import { toast } from "sonner";
 import { message } from "@/constants/message";
 
@@ -31,7 +30,6 @@ type ProductListItemProps = {
   @params index digunakan sebagai penanda posisi cart yang dihapus, akan di rollback sesuai posisi awal 
 */
 export const ProductListItem = ({ cart, index }: ProductListItemProps) => {
-  const { userId } = useAuth();
   const dispatch = useDispatch();
   const handleDelete = async (item: Cart) => {
     dispatch(deleteItem(item.id!));
@@ -79,7 +77,7 @@ export const ProductListItem = ({ cart, index }: ProductListItemProps) => {
     dispatch(toggleCheckItem({ id: item.id!, value: value }));
     try {
       dispatch(changeStatus("loading"));
-      await changeChecked(item.id!, value, userId!);
+      await changeChecked(item.id!, value);
     } catch (error) {
       dispatch(changeStatus("failed"));
     } finally {
