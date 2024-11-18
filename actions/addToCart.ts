@@ -8,14 +8,14 @@ export async function addToCart(
   userId: string,
   quantity?: number
 ) {
-  return await prisma.cartItem.update({
-    // create: {
-    //   quantity: quantity!,
-    //   price: product.priceDisplay,
-    //   productId: product.id,
-    //   userId: userId!,
-    // },
-    data: {
+  return await prisma.cartItem.upsert({
+    create: {
+      quantity: quantity!,
+      price: product.priceDisplay,
+      productId: product.id,
+      userId: userId!,
+    },
+    update: {
       quantity: {
         increment: quantity!,
       },
@@ -25,7 +25,7 @@ export async function addToCart(
     },
     where: {
       productId_userId: {
-        productId: "Qwerqwer",
+        productId: product.id,
         userId: userId,
       },
     },
