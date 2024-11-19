@@ -18,7 +18,7 @@ export function CartComponent({ show, setShow }: CartProps) {
       initial={"close"}
       animate={show ? "open" : "close"}
       variants={variants}
-      className="w-max-[500px] w-full h-auto shadow-lg rounded-sm absolute right-0 md:right-5 top-16 z-20 border bg-primary-foreground p-5"
+      className="w-full md:w-[500px] h-auto shadow-lg rounded-sm absolute right-0 md:right-5 top-16 z-20 border bg-primary-foreground p-5"
     >
       <CartContent setShow={setShow} />
     </motion.div>
