@@ -27,7 +27,7 @@ export default function SummaryComponent() {
         method: "POST",
         url: "/api/payment",
         data: {
-          cart: value.filter(item => item.checked),
+          cart: value.filter((item) => item.checked),
           user,
           totalAmount: total,
           addressId: addresses[0]?.id as string,
@@ -45,37 +45,38 @@ export default function SummaryComponent() {
   };
   return (
     <div className="w-full md:w-4/5 border-t-4 bg-primary-foreground rounded-md shadow-md px-5 py-3">
-      <div className="flex items-center gap-x-3">
-        <Paperclip size={32} /> <span className="font-bold">Summary</span>
+      <div className="flex flex-row justify-between">
+        <span>Subtotal Product</span>
+        <span>{toCurrency({ amount: totalAmount as number })}</span>
       </div>
-      <div className="flex flex-col justify-between items-end gap-y-5">
-        <div className="flex flex-col md:flex-row w-[300px] justify-between">
-          <span>Subtotal Product</span>
-          <span>{toCurrency({ amount: totalAmount as number })}</span>
-        </div>
-        <div className="flex flex-col md:flex-row w-[300px] justify-between">
-          <span>Subtotal Pengiriman</span>
-          <span>{toCurrency({ amount: expedition?.price || 0 })}</span>
-        </div>
-        <div className="flex flex-col md:flex-row w-[300px] justify-between">
-          <span>Biaya Layanan</span>
-          <span>{toCurrency({ amount: serviceFee })}</span>
-        </div>
-        <div className="flex flex-col md:flex-row w-[300px] justify-between">
-          <span>Potongan</span>
-          <span>- {toCurrency({ amount: voucher?.amount ?? 0 })}</span>
-        </div>
-        <div className="flex flex-col md:flex-row w-[300px] justify-between">
-          <span>Total Pembayaran</span>
-          <span className="text-xl font-bold">
-            {toCurrency({
-              amount: total,
-            })}
-          </span>
-        </div>
+      <div className="flex flex-row justify-between">
+        <span>Subtotal Pengiriman</span>
+        <span>{toCurrency({ amount: expedition?.price || 0 })}</span>
+      </div>
+      <div className="flex flex-row justify-between">
+        <span>Biaya Layanan</span>
+        <span>{toCurrency({ amount: serviceFee })}</span>
+      </div>
+      <div className="flex flex-row justify-between">
+        <span>Potongan</span>
+        <span>- {toCurrency({ amount: voucher?.amount ?? 0 })}</span>
+      </div>
+      <div className="flex flex-row justify-between">
+        <span>Total Pembayaran</span>
+        <span className="text-xl font-bold">
+          {toCurrency({
+            amount: total,
+          })}
+        </span>
+      </div>
+      <div className="flex mt-5">
         <Button
-          disabled={!Boolean(addresses.length) || !Boolean(expedition) || !Boolean(value.length)  }
-          className="w-full md:w-[300px] font-bold"
+          disabled={
+            !Boolean(addresses.length) ||
+            !Boolean(expedition) ||
+            !Boolean(value.length)
+          }
+          className="w-full ml-auto md:justify-self-end md:w-auto md:p-5 font-bold"
           onClick={handleCheckout}
         >
           Checkout

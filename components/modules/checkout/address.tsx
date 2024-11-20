@@ -51,7 +51,7 @@ export default function AddressComponent() {
         )}
         <Drawer>
           <DrawerTrigger asChild>
-            <Button>{address ? "Ubah" : "Pilih"}</Button>
+            <Button className="w-full md:w-auto ml-auto">{address ? "Ubah" : "Pilih"}</Button>
           </DrawerTrigger>
           <DrawerContent className="w-full lg:w-[50%] lg:mx-auto p-5">
             <DrawerTitle>Alamat Tersimpan</DrawerTitle>

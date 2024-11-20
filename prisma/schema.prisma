@@ -21,6 +21,8 @@ model User {
   Order    Order[]
 
   Address Address[]
+
+  Product Product[]
 }
 
 model Category {
@@ -45,6 +47,7 @@ model Product {
   weight       String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  favorite     User[]
 
   Category  Category       @relation(fields: [categoryId], references: [id])
   Images    ProductImage[]
@@ -153,8 +156,8 @@ model Address {
 }
 
 model Voucher {
-  id      String   @id @default(cuid())
-  code    String   @unique
+  id      String    @id @default(cuid())
+  code    String    @unique
   dueDate DateTime?
   amount  Float
 

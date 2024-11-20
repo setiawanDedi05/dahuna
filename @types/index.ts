@@ -1,3 +1,5 @@
+import { OrderItem, Voucher } from "@prisma/client";
+
 export type Category = {
   id: string;
   title: string;
@@ -120,4 +122,26 @@ export type CostExpedition = {
   type: string;
   price: string;
   estimated: string;
+};
+
+export type HistoryType = {
+  id: string;
+
+  orderStatus: string;
+  totalAmount: number;
+  createdAt: Date;
+  updatedAt: Date;
+  isDropship: boolean;
+  nameDropship: string;
+  noTelpDropShip: string;
+  note: string;
+  Address: Address;
+  addressId: string;
+  Voucher: Voucher;
+  voucherId: string;
+  expedition: string;
+  expeditionFee: number;
+  resi: string;
+
+  OrderItem: OrderItem[];
 };

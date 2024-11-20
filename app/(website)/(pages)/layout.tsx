@@ -4,6 +4,7 @@ import "swiper/css/navigation";
 import "swiper/css";
 import "../../style.css";
 import Script from "next/script";
+import { MobileButton } from "@/components/modules/header/MobileButton";
 
 export default function RootLayout({
   children,
@@ -20,6 +21,7 @@ export default function RootLayout({
         strategy="lazyOnload"
       />
       <div className="h-min-screen overflow-x-hidden">{children}</div>
+      <MobileButton />
       <Footer />
     </>
   );

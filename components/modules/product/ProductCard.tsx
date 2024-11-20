@@ -3,7 +3,7 @@
 import { Currency } from "@/components/custom/Currency";
 import { Button } from "@/components/ui/button";
 import { Product } from "@/@types";
-import { ShoppingCartIcon } from "lucide-react";
+import { Heart, ShoppingCartIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { addToCart } from "@/actions/addToCart";
@@ -41,6 +41,12 @@ export const ProductCard = ({ item }: { item: Product }) => {
           >
             <ShoppingCartIcon className="size-11" />
           </Button>
+          <Button
+            variant="outline"
+            size="icon"
+          >
+            <Heart className="size-11" />
+          </Button>
         </div>
         <Image
           src={item.Images[0]?.url ?? "/assets/images/default-image.jpg"}
@@ -48,7 +54,7 @@ export const ProductCard = ({ item }: { item: Product }) => {
           width={300}
           height={400}
           priority
-          className="duration-300 ease-linear !w-auto !h-auto object-cover"
+          className="duration-300 ease-linear !w-full !h-full object-cover"
         />
       </div>
       <Link href={`/products/${item.slug}`}>

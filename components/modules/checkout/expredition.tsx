@@ -61,7 +61,7 @@ export default function ExpeditionComponent() {
           </DrawerContent>
         </Drawer>
         {expedition && (
-          <div className="h-[80px] lg:h-[150px] w-full flex items-start justify-start border-dashed border-2 p-3 border-primary">
+          <div className="h-[80px] lg:h-[100px] w-full flex items-start justify-start border-dashed border-2 p-3 border-primary">
             <div className="flex flex-col items-start">
               <span className="text-xl font-bold">{expedition.name}</span>
               <span className="text-muted-foreground">{expedition.type}</span>
