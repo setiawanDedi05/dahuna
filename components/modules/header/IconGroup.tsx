@@ -1,13 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import { ShoppingCart, User } from "lucide-react";
+import { History, ShoppingCart, User } from "lucide-react";
 import { Button } from "../../ui/button";
 import { UserButton, useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import CartBadge from "./cart/CartBadge";
 import { CartComponent } from "./cart/Cart";
-import { toast } from "sonner";
 import { Skeleton } from "../../ui/skeleton";
 import { useCart } from "@/hooks/use-cart";
 
@@ -17,8 +16,18 @@ export const IconGroup = () => {
   const { isSignedIn } = useUser();
 
   if (error) {
-    return toast.info(
-      "Gagal dalam mengambil data, Terjadi Kesalahan Tunggu beberapa saat lagi"
+    return (
+      <section className="flex gap-5 items-center">
+        <Button
+          variant="outline"
+          size="icon"
+          className="relative flex rounded-full"
+        >
+          <Link href="/sign-in">
+            <User size={24} />
+          </Link>
+        </Button>
+      </section>
     );
   }
 
@@ -41,6 +50,15 @@ export const IconGroup = () => {
       >
         <CartBadge />
         <ShoppingCart />
+      </Button>
+      <Button
+        variant="outline"
+        size="icon"
+        className="rounded-full size-[1.75rem]"
+      >
+        <Link href="/histories">
+          <History />
+        </Link>
       </Button>
       {isSignedIn ? (
         <UserButton />

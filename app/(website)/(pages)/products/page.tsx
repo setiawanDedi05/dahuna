@@ -33,7 +33,7 @@ export default async function Products({
     prisma.$transaction([
       prisma.product.count({
         where: {
-          categoryId: category ? category : { contains: "c" },
+          categoryId: category ? category : { not: "" },
           priceDisplay: {
             gte: Number(min ?? 0),
             lte: Number(max ?? 1000000),

@@ -7,10 +7,24 @@ import {
 import prisma from "@/lib/db";
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import React from "react";
 
+const getData = async () => {
+  try {
+    const data = await prisma.category.findMany();
+    if (!data) {
+      return notFound();
+    }
+    return data;
+  } catch (error) {
+    return notFound();
+  }
+};
+
 export default async function MenuCategory() {
-  const categories = await prisma.category.findMany();
+  const categories = await getData();
+
   return (
     <HoverCard openDelay={0}>
       <HoverCardTrigger>

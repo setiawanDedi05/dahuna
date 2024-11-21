@@ -11,6 +11,10 @@ async function getData(userId: string | null) {
   const data = await prisma.order.findMany({
     where: {
       userId,
+      orderStatus: "settlement",
+      resi: {
+        not: null,
+      },
     },
     include: {
       Voucher: true,
@@ -30,8 +34,7 @@ async function getData(userId: string | null) {
   }
   return data;
 }
-
-export default async function AllHistory() {
+export default async function SentOrder() {
   const { userId } = await auth();
   const histories = await getData(userId);
   return (

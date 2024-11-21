@@ -3,7 +3,6 @@
 import { Cart } from "@/@types";
 import { RootState } from "@/redux/store";
 import { initCarts } from "@/redux/reducer/cartSlice";
-import { useAuth } from "@clerk/nextjs";
 import { useDispatch, useSelector } from "react-redux";
 import useSWR, { Fetcher } from "swr";
 
